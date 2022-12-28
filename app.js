@@ -2,6 +2,8 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 
+var bodyParser = require('body-parser')
+
 const app = express();
 
 /** motor de plantilla */
@@ -11,8 +13,11 @@ app.set('view engine','ejs')
 app.use(express.static('public'))
 
 /** procesar datos */
-app.use(express.urlencoded({extended:true}))
-app.use(express.json())
+// app.use(express.urlencoded({extended:false}))
+// app.use(express.json())
+// parse application/json
+app.use(bodyParser.urlencoded({extended:true}));  
+app.use(bodyParser.json())
 
 /** variables de entorno */
 dotenv.config({path: './env/.env'})

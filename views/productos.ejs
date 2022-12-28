@@ -9,9 +9,15 @@
       content="Mark Otto, Jacob Thornton, and Bootstrap contributors"
     />
     <meta name="generator" content="Hugo 0.104.2" />
-    <title>TEMPLATE TROPICAL - DASHBOARD</title>
+    <title>TEMPLATE TROPICAL - PRODUCTOS</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
 
     <style>
       .bd-placeholder-img {
@@ -88,12 +94,6 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <input
-        class="form-control form-control-dark w-100 rounded-0 border-0"
-        type="text"
-        placeholder="Search"
-        aria-label="Search"
-      />
       <div class="navbar-nav">
         <div class="nav-item text-nowrap">
           <a class="nav-link px-3" href="logout">Cerrar sessión</a>
@@ -205,16 +205,123 @@
           </div>
         </nav>
 
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-          <div
-            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
-          >
-            <h1 class="h2">Bienvenido</h1>
-            <% if(user){ %>
-              <span class="bagde bg-success"><%= user.name%> </span>
-            <% } %>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-3">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                      <a href="javascript:void(0)">Matenimiento</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                      Productos
+                    </li>
+                  </ol>
+                </nav>
+              </div>
+              <div class="col-md-12 mt-2 d-flex justify-content-end">
+                <div id="btn_nuevo">
+                  <button class="btn btn-sm btn-info" onclick="btnNew()">
+                    <i class="fas fa-plus"></i> Nuevo Producto
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-12 mt-2" id="table" style="display: none">
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <td>Id</td>
+                        <td>Nombre</td>
+                        <td>Presentación</td>
+                        <td>Precio</td>
+                        <td>Acción</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% if(data.length == 0){ %>
+                      <tr>
+                        <td colspan="5" class="table-warning text-center">
+                          NO HAY DATA PARA MOSTRAR
+                        </td>
+                      </tr>
+                      <% } %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="col-md-12" id="form">
+                <div class="row g-3">
+                  <form id="formProducto" method="post">
+                    <div class="col-md-8">
+                      <label for="name" class="form-label">Nombre</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="name"
+                        name="name"
+                        value=""
+                        required
+                        placeholder="Nombre de Producto"
+                      />
+                    </div>
+                    <div class="col-md-8">
+                      <label for="unit" class="form-label">Presentación</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="unit"
+                        name="unit"
+                        value=""
+                        required
+                        placeholder="Presentación de producto"
+                      />
+                    </div>
+                    <div class="col-md-8">
+                      <label for="price" class="form-label">Precio</label>
+                      <div class="input-group">
+                        <span class="input-group-text" id="inputGroupPrepend2"
+                          >$</span
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="price"
+                          name="price"
+                          aria-describedby="inputGroupPrepend2"
+                          required
+                          placeholder="Precio del producto"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <label for="image" class="form-label">Imagen</label>
+                      <input
+                        type="file"
+                        class="form-control"
+                        id="image"
+                        name="image"
+                        required
+                      />
+                    </div>
+                    <div class="col-12">
+                      <button
+                        class="btn btn-danger"
+                        type="button"
+                        onclick="backPage()"
+                      >
+                        Cancelar
+                      </button>
+                      <button class="btn btn-primary ml-1" type="submit">
+                        Guardar
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
-
         </main>
       </div>
     </div>
@@ -232,5 +339,56 @@
       crossorigin="anonymous"
     ></script>
     <script src="js/dashboard.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.3.min.js"
+      integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      $(document).ready(function () {
+        let view = "table";
+        $("#table").attr("style", "display:block");
+        $("#btn_nuevo").attr("style", "display:block");
+        $("#form").attr("style", "display:none");
+        /**  form ajax**/
+        $('#formProducto').submit(function(e) {
+          e.preventDefault();
+          // let formData = new FormData();
+          // formData.append('name', $('#name').val());
+          // formData.append('unit', $('#unit').val());
+          // formData.append('price', $('#price').val());
+          // formData.append('image', $('input[type=file]')[0].files[0]);
+          $.ajax({
+            url: '/product/register',
+            data: {
+              'data':'efe'
+            },
+            // enctype: 'multipart/form-data',
+            type: 'POST',
+            cache: false,
+            contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+            processData: false, // NEEDED, DON'T OMIT THIS
+            success : function(response){
+              console.log(response); 
+            },
+            error: function(error){
+              console.log(error);
+            }
+          });
+        });
+        
+      });
+
+      function btnNew() {
+        $("#table").attr("style", "display:none");
+        $("#btn_nuevo").attr("style", "display:none");
+        $("#form").attr("style", "display:block");
+      }
+      function backPage() {
+        $("#table").attr("style", "display:block");
+        $("#btn_nuevo").attr("style", "display:block");
+        $("#form").attr("style", "display:none");
+      }
+    </script>
   </body>
 </html>
