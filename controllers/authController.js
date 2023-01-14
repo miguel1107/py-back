@@ -10,7 +10,7 @@ exports.register = async (req,res)=>{
         const user = req.body.user;
         const pass = req.body.pass;
         let hash = await bcryptjs.hash(pass,8);
-        conexion.query('INSERT INTO users SET ?',{user:user,name:name,password:hash},(error,results)=>{
+        conexion.query('INSERT INTO users SET ?',{user:user,name:name,password:hash,role_id:1},(error,results)=>{
             if(error){console.error(error);}
             res.redirect('/');
             console.log(res);

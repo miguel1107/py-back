@@ -9,7 +9,7 @@
       content="Mark Otto, Jacob Thornton, and Bootstrap contributors"
     />
     <meta name="generator" content="Hugo 0.104.2" />
-    <title>TEMPLATE TROPICAL - PRODUCTOS</title>
+    <title>TEMPLATE TROPICAL - ClienteS</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link
@@ -135,7 +135,7 @@
             </h6>
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link" href="/clientes">
+                <a class="nav-link active" href="/clientes">
                   <span data-feather="users" class="align-text-bottom"></span>
                   Clientes
                 </a>
@@ -147,7 +147,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="/productos">
+                <a class="nav-link" href="/productos">
                   <span
                     data-feather="shopping-cart"
                     class="align-text-bottom"
@@ -228,7 +228,7 @@
                       <a href="javascript:void(0)">Matenimiento</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
-                      Productos
+                      Clientes
                     </li>
                   </ol>
                 </nav>
@@ -236,7 +236,7 @@
               <div class="col-md-12 mt-2 d-flex justify-content-end">
                 <div id="btn_nuevo">
                   <button class="btn btn-sm btn-info" onclick="btnNew()">
-                    <i class="fas fa-plus"></i> Nuevo Producto
+                    <i class="fas fa-plus"></i> Nuevo Cliente
                   </button>
                 </div>
               </div>
@@ -244,29 +244,75 @@
                 <div class="table-responsive">
                   <table class="table table-bordered">
                     <thead>
-                      <tr>
-                        <td>Id</td>
-                        <td>Nombre</td>
-                        <td>Presentación</td>
-                        <td>Precio</td>
-                        <td>Acción</td>
+                      <tr class="table-primary">
+                        <th>Id</th>
+                        <th>Documento</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Correo</th>
+                        <th>Acción</th>
                       </tr>
                     </thead>
                     <tbody>
                       <% if(data.length == 0){ %>
                       <tr>
-                        <td colspan="5" class="table-warning text-center">
+                        <td colspan="6" class="table-warning text-center">
                           NO HAY DATA PARA MOSTRAR
                         </td>
                       </tr>
-                      <% } %>
+                      <% }else{ data.forEach(function(item){ %>
+
+                      <tr>
+                        <td><%= item.id %></td>
+                        <td><%= item.document %></td>
+                        <td><%= item.name %></td>
+                        <td><%= item.last_name %></td>
+                        <td><%= item.email %></td>
+                        <td width="10%" class="text-center">
+                          <button
+                            onclick="mtdEdit(<%=item.id %>)"
+                            type="button"
+                            class="btn btn-sm btn-success"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            title="Editar"
+                          >
+                            <i class="fas fa-edit"></i>
+                          </button>
+                          <button
+                            onclick="mtdDelete(<%=item.id %>)"
+                            type="button"
+                            class="btn btn-sm btn-danger"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            title="Eliminar"
+                          >
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      <% }) } %>
                     </tbody>
                   </table>
                 </div>
               </div>
               <div class="col-md-12" id="form">
                 <div class="row g-3">
-                  <form id="formProducto" method="post">
+                  <form id="formCliente" action="/client/action" method="post">
+                    <input type="hidden" id="action" name="action" />
+                    <input type="hidden" id="id" name="id" />
+                    <input type="hidden" id="userid" name="userid" />
+                    <div class="col-md-8">
+                      <label for="document" class="form-label">Documento</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="document"
+                        name="document"
+                        required
+                        placeholder="Documento de Cliente"
+                      />
+                    </div>
                     <div class="col-md-8">
                       <label for="name" class="form-label">Nombre</label>
                       <input
@@ -274,51 +320,36 @@
                         class="form-control"
                         id="name"
                         name="name"
-                        value=""
                         required
-                        placeholder="Nombre de Producto"
+                        placeholder="Nombre de Cliente"
                       />
                     </div>
                     <div class="col-md-8">
-                      <label for="unit" class="form-label">Presentación</label>
+                      <label for="last_name" class="form-label"
+                        >Apellidos</label
+                      >
                       <input
                         type="text"
                         class="form-control"
-                        id="unit"
-                        name="unit"
-                        value=""
+                        id="last_name"
+                        name="last_name"
                         required
-                        placeholder="Presentación de producto"
+                        placeholder="Apellido de Cliente"
                       />
                     </div>
                     <div class="col-md-8">
-                      <label for="price" class="form-label">Precio</label>
-                      <div class="input-group">
-                        <span class="input-group-text" id="inputGroupPrepend2"
-                          >$</span
-                        >
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="price"
-                          name="price"
-                          aria-describedby="inputGroupPrepend2"
-                          required
-                          placeholder="Precio del producto"
-                        />
-                      </div>
-                    </div>
-                    <div class="col-md-8">
-                      <label for="image" class="form-label">Imagen</label>
+                      <label for="email" class="form-label">Correo</label>
                       <input
-                        type="file"
+                        type="email"
                         class="form-control"
-                        id="image"
-                        name="image"
+                        id="email"
+                        name="email"
+                        aria-describedby="inputGroupPrepend2"
                         required
+                        placeholder="Correo del Cliente"
                       />
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 mt-2">
                       <button
                         class="btn btn-danger"
                         type="button"
@@ -363,44 +394,60 @@
         $("#table").attr("style", "display:block");
         $("#btn_nuevo").attr("style", "display:block");
         $("#form").attr("style", "display:none");
-        /**  form ajax**/
-        $('#formProducto').submit(function(e) {
-          e.preventDefault();
-          // let formData = new FormData();
-          // formData.append('name', $('#name').val());
-          // formData.append('unit', $('#unit').val());
-          // formData.append('price', $('#price').val());
-          // formData.append('image', $('input[type=file]')[0].files[0]);
-          $.ajax({
-            url: '/product/register',
-            data: {
-              'data':'efe'
-            },
-            // enctype: 'multipart/form-data',
-            type: 'POST',
-            cache: false,
-            contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
-            processData: false, // NEEDED, DON'T OMIT THIS
-            success : function(response){
-              console.log(response); 
-            },
-            error: function(error){
-              console.log(error);
-            }
-          });
-        });
-        
       });
 
       function btnNew() {
         $("#table").attr("style", "display:none");
         $("#btn_nuevo").attr("style", "display:none");
         $("#form").attr("style", "display:block");
+        $("#action").val("store");
       }
       function backPage() {
         $("#table").attr("style", "display:block");
         $("#btn_nuevo").attr("style", "display:block");
         $("#form").attr("style", "display:none");
+        $("#action").val("");
+      }
+
+      function mtdEdit(id) {
+        $.ajax({
+          url: "/client/show/" + id,
+          type: "GET",
+          success: function (response) {
+            $("#table").attr("style", "display:none");
+            $("#btn_nuevo").attr("style", "display:none");
+            $("#form").attr("style", "display:block");
+            $("#action").val("update");
+            $("#id").val(id);
+            $("#userid").val(response.data.user_id);
+            $("#document").val(response.data.document);
+            $("#name").val(response.data.name);
+            $("#last_name").val(response.data.last_name);
+            $("#email").val(response.data.email);
+          },
+          error: function (error) {
+            console.log(error);
+          },
+        });
+      }
+
+      function mtdDelete(id) {
+        let respuesta = confirm("¿Desea eliminar este cliente?");
+        if (respuesta == true) {
+          $.ajax({
+            url: "/client/delete",
+            data: {
+              id: id,
+            },
+            type: "POST",
+            success: function (response) {
+              window.location.reload();
+            },
+            error: function (error) {
+              console.log(error);
+            },
+          });
+        }
       }
     </script>
   </body>
