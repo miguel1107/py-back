@@ -36,7 +36,7 @@ exports.show = async (req,res,next)=>{
         });
     } catch (error) {
         console.log(error);
-    }
+    } 
 };
 
 exports.delete = async (req, res,next)=>{

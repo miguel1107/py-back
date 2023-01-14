@@ -39,6 +39,6 @@ router.post('/presentation/delete', authController.isAuthenticated,presentationC
 router.get('/zonas', authController.isAuthenticated,zoneController.index);
 router.post('/zone/action', authController.isAuthenticated,zoneController.action);
 router.get('/zone/show/:id', authController.isAuthenticated,zoneController.show);
-router.post('/zone/delete', authController.isAuthenticated,presentationController.delete);
+router.post('/zone/delete', authController.isAuthenticated,zoneController.delete);
 
 module.exports=router;
