@@ -420,6 +420,7 @@
           url: "/client/show/" + id,
           type: "GET",
           success: function (response) {
+            console.log(response);
             $("#table").attr("style", "display:none");
             $("#btn_nuevo").attr("style", "display:none");
             $("#form").attr("style", "display:block");

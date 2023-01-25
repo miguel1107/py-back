@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 14-01-2023 a las 16:17:58
+-- Tiempo de generación: 25-01-2023 a las 23:34:40
 -- Versión del servidor: 5.7.24
 -- Versión de PHP: 7.4.10
 
@@ -34,15 +34,10 @@ CREATE TABLE `clients` (
   `last_name` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `user_id` int(10) UNSIGNED NOT NULL,
-  `state` int(1) NOT NULL DEFAULT '1'
+  `state` int(1) NOT NULL DEFAULT '1',
+  `createdAt` timestamp NULL DEFAULT NULL,
+  `updatedAt` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `clients`
---
-
-INSERT INTO `clients` (`id`, `document`, `name`, `last_name`, `email`, `user_id`, `state`) VALUES
-(4, '78945612', 'edit', 'mm', 'mm@gg.com', 6, 1);
 
 -- --------------------------------------------------------
 
@@ -61,7 +56,7 @@ CREATE TABLE `presentations` (
 --
 
 INSERT INTO `presentations` (`id`, `name`, `state`) VALUES
-(1, 'six pack d', 1);
+(1, 'six pack d', 0);
 
 -- --------------------------------------------------------
 
@@ -74,6 +69,20 @@ CREATE TABLE `products` (
   `name` varchar(50) NOT NULL,
   `presentation` varchar(50) NOT NULL,
   `image` text NOT NULL,
+  `price` decimal(11,2) NOT NULL,
+  `state` int(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `product_presentations`
+--
+
+CREATE TABLE `product_presentations` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `product_id` int(10) UNSIGNED NOT NULL,
+  `presentation_id` int(10) UNSIGNED NOT NULL,
   `price` decimal(11,2) NOT NULL,
   `state` int(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -126,8 +135,7 @@ CREATE TABLE `sales` (
 CREATE TABLE `sale_details` (
   `id` int(10) UNSIGNED NOT NULL,
   `sale_id` int(10) UNSIGNED NOT NULL,
-  `product_id` int(10) UNSIGNED NOT NULL,
-  `presentation_id` int(10) UNSIGNED NOT NULL,
+  `product_presentation_id` int(10) UNSIGNED NOT NULL,
   `quantity` int(11) NOT NULL,
   `price` decimal(11,2) NOT NULL,
   `state` int(1) NOT NULL
@@ -153,8 +161,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `user`, `password`, `role_id`, `state`) VALUES
-(1, 'Admin 1', 'admin', '$2a$08$EWv1bLJHjWq2CCc7QfgkEeMdsCyZsa1Rk7KVYlRgJ.0xaw5T.ReXO', 1, 1),
-(6, 'edit mm', '78945612', '$2a$08$PzzIfMrqZhBg2S18FyeoOuSYcdwgJvdcDMj2db066tJhSbzmMEQPG', 2, 1);
+(1, 'Admin 1', 'admin', '$2a$08$EWv1bLJHjWq2CCc7QfgkEeMdsCyZsa1Rk7KVYlRgJ.0xaw5T.ReXO', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -168,6 +175,13 @@ CREATE TABLE `zones` (
   `price` decimal(11,2) NOT NULL,
   `state` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `zones`
+--
+
+INSERT INTO `zones` (`id`, `name`, `price`, `state`) VALUES
+(1, 'zona 12', '21.00', 0);
 
 --
 -- Índices para tablas volcadas
@@ -193,6 +207,14 @@ ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `product_presentations`
+--
+ALTER TABLE `product_presentations`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `presentation_id` (`presentation_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
 -- Indices de la tabla `roles`
 --
 ALTER TABLE `roles`
@@ -211,9 +233,8 @@ ALTER TABLE `sales`
 --
 ALTER TABLE `sale_details`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `product_id` (`product_id`),
   ADD KEY `sale_id` (`sale_id`),
-  ADD KEY `presentation_id` (`presentation_id`);
+  ADD KEY `product_presentation_id` (`product_presentation_id`);
 
 --
 -- Indices de la tabla `users`
@@ -236,7 +257,7 @@ ALTER TABLE `zones`
 -- AUTO_INCREMENT de la tabla `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `presentations`
@@ -248,6 +269,12 @@ ALTER TABLE `presentations`
 -- AUTO_INCREMENT de la tabla `products`
 --
 ALTER TABLE `products`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `product_presentations`
+--
+ALTER TABLE `product_presentations`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
@@ -272,13 +299,13 @@ ALTER TABLE `sale_details`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `zones`
 --
 ALTER TABLE `zones`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
@@ -291,6 +318,13 @@ ALTER TABLE `clients`
   ADD CONSTRAINT `clients_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
+-- Filtros para la tabla `product_presentations`
+--
+ALTER TABLE `product_presentations`
+  ADD CONSTRAINT `product_presentations_ibfk_1` FOREIGN KEY (`presentation_id`) REFERENCES `presentations` (`id`),
+  ADD CONSTRAINT `product_presentations_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+
+--
 -- Filtros para la tabla `sales`
 --
 ALTER TABLE `sales`
@@ -301,9 +335,8 @@ ALTER TABLE `sales`
 -- Filtros para la tabla `sale_details`
 --
 ALTER TABLE `sale_details`
-  ADD CONSTRAINT `sale_details_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
   ADD CONSTRAINT `sale_details_ibfk_2` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`id`),
-  ADD CONSTRAINT `sale_details_ibfk_3` FOREIGN KEY (`presentation_id`) REFERENCES `presentations` (`id`);
+  ADD CONSTRAINT `sale_details_ibfk_3` FOREIGN KEY (`product_presentation_id`) REFERENCES `product_presentations` (`id`);
 
 --
 -- Filtros para la tabla `users`
