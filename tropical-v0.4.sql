@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 25-01-2023 a las 23:34:40
+-- Tiempo de generación: 23-02-2023 a las 04:56:27
 -- Versión del servidor: 5.7.24
 -- Versión de PHP: 7.4.10
 
@@ -48,15 +48,19 @@ CREATE TABLE `clients` (
 CREATE TABLE `presentations` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(50) NOT NULL,
-  `state` int(1) NOT NULL
+  `state` int(1) NOT NULL,
+  `createdAt` timestamp NULL DEFAULT NULL,
+  `updatedAt` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `presentations`
 --
 
-INSERT INTO `presentations` (`id`, `name`, `state`) VALUES
-(1, 'six pack d', 0);
+INSERT INTO `presentations` (`id`, `name`, `state`, `createdAt`, `updatedAt`) VALUES
+(1, 'six pack', 1, NULL, NULL),
+(2, 'doce pack', 1, NULL, NULL),
+(3, 'veinticuatro pack', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -67,10 +71,10 @@ INSERT INTO `presentations` (`id`, `name`, `state`) VALUES
 CREATE TABLE `products` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(50) NOT NULL,
-  `presentation` varchar(50) NOT NULL,
   `image` text NOT NULL,
-  `price` decimal(11,2) NOT NULL,
-  `state` int(1) NOT NULL DEFAULT '1'
+  `state` int(1) NOT NULL DEFAULT '1',
+  `createdAt` timestamp NULL DEFAULT NULL,
+  `updatedAt` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -81,10 +85,12 @@ CREATE TABLE `products` (
 
 CREATE TABLE `product_presentations` (
   `id` int(10) UNSIGNED NOT NULL,
-  `product_id` int(10) UNSIGNED NOT NULL,
-  `presentation_id` int(10) UNSIGNED NOT NULL,
+  `productId` int(10) UNSIGNED NOT NULL,
+  `presentationId` int(10) UNSIGNED NOT NULL,
   `price` decimal(11,2) NOT NULL,
-  `state` int(1) NOT NULL DEFAULT '1'
+  `state` int(1) NOT NULL DEFAULT '1',
+  `createdAt` timestamp NULL DEFAULT NULL,
+  `updatedAt` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -181,7 +187,7 @@ CREATE TABLE `zones` (
 --
 
 INSERT INTO `zones` (`id`, `name`, `price`, `state`) VALUES
-(1, 'zona 12', '21.00', 0);
+(1, 'zona 12', '21.00', 1);
 
 --
 -- Índices para tablas volcadas
@@ -211,8 +217,8 @@ ALTER TABLE `products`
 --
 ALTER TABLE `product_presentations`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `presentation_id` (`presentation_id`),
-  ADD KEY `product_id` (`product_id`);
+  ADD KEY `presentation_id` (`presentationId`),
+  ADD KEY `product_id` (`productId`);
 
 --
 -- Indices de la tabla `roles`
@@ -263,7 +269,7 @@ ALTER TABLE `clients`
 -- AUTO_INCREMENT de la tabla `presentations`
 --
 ALTER TABLE `presentations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `products`
@@ -321,8 +327,8 @@ ALTER TABLE `clients`
 -- Filtros para la tabla `product_presentations`
 --
 ALTER TABLE `product_presentations`
-  ADD CONSTRAINT `product_presentations_ibfk_1` FOREIGN KEY (`presentation_id`) REFERENCES `presentations` (`id`),
-  ADD CONSTRAINT `product_presentations_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+  ADD CONSTRAINT `product_presentations_ibfk_1` FOREIGN KEY (`presentationId`) REFERENCES `presentations` (`id`),
+  ADD CONSTRAINT `product_presentations_ibfk_2` FOREIGN KEY (`productId`) REFERENCES `products` (`id`);
 
 --
 -- Filtros para la tabla `sales`

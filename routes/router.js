@@ -6,6 +6,17 @@ const clienteController = require('../controllers/clientesController')
 const presentationController = require('../controllers/presentationController')
 const zoneController = require('../controllers/zoneController')
 
+var multer = require('multer');
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/img/product/');
+    },
+    filename: function (req, file, cb) {
+        // let ar = file.originalname.split('.');
+        cb(null, file.fieldname + '-' + file.originalname);
+    }
+});
+const upload = multer({ storage: storage });
 
 /** vistas */
 
@@ -24,7 +35,12 @@ router.post('/login',authController.login);
 router.get('/logout',authController.logout);
 /** controller mantenimiento */
 router.get('/productos', authController.isAuthenticated,mantenimientoController.index);
-router.post('/product/register',authController.isAuthenticated,mantenimientoController.store);
+router.post('/product/action', upload.single('file'),authController.isAuthenticated,mantenimientoController.action);
+router.get('/product/show/:id', authController.isAuthenticated,mantenimientoController.show);
+router.post('/product/delete', authController.isAuthenticated,mantenimientoController.delete);
+router.post('/product/addpresentation', authController.isAuthenticated,mantenimientoController.addpresentation);
+router.post('/product/delpresentation', authController.isAuthenticated,mantenimientoController.delpresentation);
+
 /** mantenimiento de clientes */
 router.get('/clientes', authController.isAuthenticated,clienteController.index);
 router.post('/client/action', authController.isAuthenticated,clienteController.action);
