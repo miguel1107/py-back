@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  topicaldb:
+    image: mysql:8.0
+    networks:
+      - tropical-network
+    restart: always
+    ports:
+      - "${DKDB_PORT}:${DB_PORT}"
+    environment:
+      MYSQL_PASSWORD: ${DB_PASS}
+      MYSQL_DB: ${DB_DATABASE}
+    container_name: ${DKDB_HOST}
+    volumes:
+      - ./tropical_db:/var/lib/mysql
+  tropicaldapp:
+    depends_on:
+      - topicaldb
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tropicalapp:1.0.0
+    networks:
+      - tropical-network
+    container_name: TropicalApp
+    restart: always
+    ports:
+      - "${PORT}:${PORT}"
+    environment:
+      PORT: ${PORT}
+      JWTSECRETO: ${JWTSECRETO}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_NAME: ${DB_DATABASE}
+      DB_DIAL: ${DB_DIAL}
+volumes:
+  tropical_db:
+networks:
+  tropical-network:

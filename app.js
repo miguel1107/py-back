@@ -33,6 +33,6 @@ app.use(function(req,res,next){
 
 /** router */
 app.use('/',require('./routes/router'))
-app.listen(3000, ()=>{
+app.listen(process.env.PORT, ()=>{
     console.log('runnig..');
 })
