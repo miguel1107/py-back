@@ -1,0 +1,133 @@
+<nav
+  id="sidebarMenu"
+  class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"
+>
+  <div class="position-sticky pt-3 sidebar-sticky">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link <%= nav=='home'?'active':'' %>" aria-current="page" href="/">
+          <span data-feather="home" class="align-text-bottom"></span>
+          Inicio
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="javascript:void(0)">
+          <span data-feather="file" class="align-text-bottom"></span>
+          Ordenes
+        </a>
+      </li>
+    </ul>
+    <h6
+      class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase"
+    >
+      <span>Accesos</span>
+    </h6>
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link <%= nav=='role'?'active':'' %>" href="/roles">
+          <span class="align-text-bottom"><i class="fas fa-user-tie"></i></span>
+          Roles
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link <%= nav=='permision'?'active':'' %>" href="/permisos">
+          <span class="align-text-bottom"><i class="fas fa-user-lock"></i></span>
+          Permisos
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link <%= nav=='user'?'active':'' %>" href="/usuarios">
+          <span class="align-text-bottom"><i class="fas fa-user-check"></i></span>
+          Usuarios
+        </a>
+      </li>
+    </ul>
+    <h6
+      class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase"
+    >
+      <span>Matenimientos</span>
+    </h6>
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link <%= nav=='client'?'active':'' %>" href="/clientes">
+          <span data-feather="users" class="align-text-bottom"></span>
+          Clientes
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link <%= nav=='presentation'?'active':'' %>"
+          href="/presentaciones"
+        >
+          <span data-feather="layers" class="align-text-bottom"></span>
+          Presentaciones
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link <%= nav=='zone'?'active':'' %>" href="/zonas">
+          <span data-feather="book" class="align-text-bottom"></span>
+          Zonas
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link <%= nav=='product'?'active':'' %>" href="/productos">
+          <span data-feather="shopping-cart" class="align-text-bottom"></span>
+          Products
+        </a>
+      </li>
+    </ul>
+
+    <h6
+      class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase"
+    >
+      <span>Reportes</span>
+      <a class="link-secondary" href="#" aria-label="Add a new report">
+        <span data-feather="plus-circle" class="align-text-bottom"></span>
+      </a>
+    </h6>
+    <ul class="nav flex-column mb-2">
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <span data-feather="bar-chart-2" class="align-text-bottom"></span>
+          Reportes
+        </a>
+      </li>
+      <!-- <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span
+                    data-feather="file-text"
+                    class="align-text-bottom"
+                  ></span>
+                  Current month
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span
+                    data-feather="file-text"
+                    class="align-text-bottom"
+                  ></span>
+                  Last quarter
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span
+                    data-feather="file-text"
+                    class="align-text-bottom"
+                  ></span>
+                  Social engagement
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span
+                    data-feather="file-text"
+                    class="align-text-bottom"
+                  ></span>
+                  Year-end sale
+                </a>
+              </li> -->
+    </ul>
+  </div>
+</nav>
