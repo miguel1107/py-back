@@ -5,6 +5,8 @@ const mantenimientoController = require('../controllers/mantenimientosController
 const clienteController = require('../controllers/clientesController')
 const presentationController = require('../controllers/presentationController')
 const zoneController = require('../controllers/zoneController')
+const roleController = require('../controllers/roleController')
+const permissionController = require('../controllers/permissionController')
 
 var multer = require('multer');
 const storage = multer.diskStorage({
@@ -29,10 +31,13 @@ router.get('/', authController.isAuthenticated,(req,res)=>{
 });
 
 
-/** controller auth */
-router.post('/register',authController.register);
+/** controller auth - usuario*/
 router.post('/login',authController.login);
 router.get('/logout',authController.logout);
+router.get('/usuarios', authController.isAuthenticated,authController.index);
+router.post('/user/action',authController.isAuthenticated,authController.action);
+router.post('/user/delete', authController.isAuthenticated,authController.delete);
+
 /** controller mantenimiento */
 router.get('/productos', authController.isAuthenticated,mantenimientoController.index);
 router.post('/product/action', upload.single('file'),authController.isAuthenticated,mantenimientoController.action);
@@ -56,5 +61,17 @@ router.get('/zonas', authController.isAuthenticated,zoneController.index);
 router.post('/zone/action', authController.isAuthenticated,zoneController.action);
 router.get('/zone/show/:id', authController.isAuthenticated,zoneController.show);
 router.post('/zone/delete', authController.isAuthenticated,zoneController.delete);
+
+/** mantenimiento de roles */
+router.get('/roles', authController.isAuthenticated,roleController.index);
+router.post('/role/action', authController.isAuthenticated,roleController.action);
+router.get('/role/show/:id', authController.isAuthenticated,roleController.show);
+router.post('/role/delete', authController.isAuthenticated,roleController.delete);
+
+/** mantenimiento de permisos */
+router.get('/permisos', authController.isAuthenticated,permissionController.index);
+router.post('/permission/action', authController.isAuthenticated,permissionController.action);
+router.get('/permission/show/:id', authController.isAuthenticated,permissionController.show);
+router.post('/permission/delete', authController.isAuthenticated,permissionController.delete);
 
 module.exports=router;
