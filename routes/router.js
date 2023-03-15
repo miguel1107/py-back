@@ -43,7 +43,7 @@ router.post('/product/delpresentation', authController.isAuthenticated,mantenimi
 
 /** mantenimiento de clientes */
 router.get('/clientes', authController.isAuthenticated,clienteController.index);
-router.post('/client/action', authController.isAuthenticated,clienteController.action);
+router.post('/client/action', /*authController.isAuthenticated,*/clienteController.action);
 router.get('/client/show/:id', authController.isAuthenticated,clienteController.show);
 router.post('/client/delete', authController.isAuthenticated,clienteController.delete);
 /** mantenimiento de presentaciones */

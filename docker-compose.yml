@@ -8,11 +8,11 @@ services:
     ports:
       - "${DKDB_PORT}:${DB_PORT}"
     environment:
-      MYSQL_PASSWORD: ${DB_PASS}
-      MYSQL_DB: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE: ${DB_DATABASE}
     container_name: ${DKDB_HOST}
     volumes:
-      - ./tropical_db:/var/lib/mysql
+      - ./${DKDB_HOST}:/var/lib/mysql
   tropicaldapp:
     depends_on:
       - topicaldb
@@ -28,12 +28,12 @@ services:
       - "${PORT}:${PORT}"
     environment:
       PORT: ${PORT}
-      JWTSECRETO: ${JWTSECRETO}
+      JWT_SECRETO: ${JWT_SECRETO}
       DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASS}
-      DB_NAME: ${DB_DATABASE}
+      DB_DATABASE: ${DB_DATABASE}
       DB_DIAL: ${DB_DIAL}
 volumes:
   tropical_db:

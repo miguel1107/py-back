@@ -21,6 +21,7 @@ app.use(bodyParser.json())
 
 /** variables de entorno */
 dotenv.config({path: './env/.env'})
+//dotenv.config({path: '.env'})
 
 /** cookies */
 app.use(cookieParser());
@@ -34,5 +35,5 @@ app.use(function(req,res,next){
 /** router */
 app.use('/',require('./routes/router'))
 app.listen(process.env.PORT, ()=>{
-    console.log('runnig..');
+    console.log('runnig....');
 })

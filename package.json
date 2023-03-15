@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start":"node app.js",
+    "dev": "nodemon app.js",
+    "docker":"docker-compose -f docker-compose.yml --env-file env/.env up -d"
   },
   "keywords": [],
   "author": "",
