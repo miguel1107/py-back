@@ -83,8 +83,7 @@ exports.delete = async (req, res, next) => {
 
 exports.login = async (req, res) => {
   try {
-    const user = req.body.user;
-    const pass = req.body.pass;
+    const { user, pass } = req.body
     if (!user || !pass) {
       res.render("login", {
         alert: true,
@@ -118,7 +117,6 @@ exports.login = async (req, res) => {
             const token = jwt.sign({ id: id }, process.env.JWT_SECRETO, {
               expiresIn: process.env.JWT_TIEMPO_EXPIRA,
             });
-            console.log(token);
 
             const cookiesOptions = {
               expires: new Date(
@@ -135,7 +133,7 @@ exports.login = async (req, res) => {
               alertIcon: "success",
               showConfirmButton: false,
               timer: 800,
-              ruta: "",
+              ruta: ""
             });
           }
         }
