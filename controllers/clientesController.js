@@ -35,7 +35,7 @@ exports.action = async (req,res,next)=>{
     let hash = await bcryptjs.hash(pass,8);
     let userId = 0;
     if (req.body.action == 'store') {
-        conexion.query('INSERT INTO users SET ?',{user:document,name:complete,password:hash,role_id:2},(error,results)=>{
+        conexion.query('INSERT INTO users SET ?',{user:document,name:complete,password:hash,roleId:2},(error,results)=>{
             if(error){console.error(error);}
             userId = results.insertId;
             try {
