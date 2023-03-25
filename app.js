@@ -1,13 +1,17 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
+const cors = require("cors")
 
 var bodyParser = require('body-parser')
 
 const app = express();
 
+app.use(cors())
+
 /** motor de plantilla */
 app.set('view engine','ejs')
+
 
 /** carpeta public */
 app.use(express.static('public'))
@@ -33,6 +37,7 @@ app.use(function(req,res,next){
 
 /** router */
 app.use('/',require('./routes/router'))
+app.use('/api',require('./routes/api'))
 app.listen(3000, ()=>{
     console.log('runnig..');
 })
