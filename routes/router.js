@@ -36,7 +36,7 @@ router.post('/login',authController.login);
 router.get('/logout',authController.logout);
 router.get('/usuarios', authController.isAuthenticated,authController.index);
 router.post('/user/action',authController.isAuthenticated,authController.action);
-router.post('/user/delete', authController.isAuthenticated,authController.delete);
+router.post('/user/delete', authController.isAuthenticated,authController.Delete);
 
 /** controller mantenimiento */
 router.get('/productos', authController.isAuthenticated,mantenimientoController.index);
@@ -50,12 +50,12 @@ router.post('/product/delpresentation', authController.isAuthenticated,mantenimi
 router.get('/clientes', authController.isAuthenticated,clienteController.index);
 router.post('/client/action', /*authController.isAuthenticated,*/clienteController.action);
 router.get('/client/show/:id', authController.isAuthenticated,clienteController.show);
-router.post('/client/delete', authController.isAuthenticated,clienteController.delete);
+router.post('/client/delete', authController.isAuthenticated,clienteController.Delete);
 /** mantenimiento de presentaciones */
 router.get('/presentaciones', authController.isAuthenticated,presentationController.index);
 router.post('/presentation/action', authController.isAuthenticated,presentationController.action);
 router.get('/presentation/show/:id', authController.isAuthenticated,presentationController.show);
-router.post('/presentation/delete', authController.isAuthenticated,presentationController.delete);
+router.post('/presentation/delete', authController.isAuthenticated,presentationController.Delete);
 /** mantenimiento de zonas */
 router.get('/zonas', authController.isAuthenticated,zoneController.index);
 router.post('/zone/action', authController.isAuthenticated,zoneController.action);

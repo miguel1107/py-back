@@ -5,7 +5,7 @@ const {promisify} = require('util')
 
 const Client = require('../models/Client')
 
-exports.index = async (req,res,next)=>{
+const index = async (req,res,next)=>{
     try {
         let data = await Client.findAll(
             {
@@ -23,7 +23,7 @@ exports.index = async (req,res,next)=>{
     // });
 };
 
-exports.action = async (req,res,next)=>{
+const action = async (req,res,next)=>{
     const { document, name, last_name, email, pass } = req.body
     
     const complete= name + " "+ last_name;
@@ -57,7 +57,7 @@ exports.action = async (req,res,next)=>{
     }
 };
 
-exports.show = async (req,res,next)=>{
+const show = async (req,res,next)=>{
     const id = req.params.id;
     try {
         let cliente = await Client.findAll({
@@ -75,7 +75,7 @@ exports.show = async (req,res,next)=>{
     // });
 };
 
-exports.delete = async (req, res,next)=>{
+const Delete = async (req, res,next)=>{
     const id = req.body.id;
     try {
         const upClient = await Client.update({state:0 }, {
@@ -92,3 +92,10 @@ exports.delete = async (req, res,next)=>{
     //     res.json({data:results[0]})
     // });
 };
+
+module.exports = {
+    index,
+    action,
+    show,
+    Delete
+}

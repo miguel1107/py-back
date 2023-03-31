@@ -8,4 +8,5 @@ COPY package.json /var/www/TropicalMitch
 
 RUN npm install
 
+CMD [ "sleep","240" ]
 CMD [ "npm","start" ]

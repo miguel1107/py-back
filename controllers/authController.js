@@ -6,7 +6,7 @@ const User = require('../models/User')
 const Role = require('../models/Role')
 
 /** index */
-exports.index = async (req, res, next) => {
+const index = async (req, res, next) => {
   try {
     let data = await User.findAll({
       where: {
@@ -25,46 +25,42 @@ exports.index = async (req, res, next) => {
 };
 
 /** regiter */
-exports.action = async (req, res) => {
+const action = async (req, res) => {
   try {
-    const name = req.body.name;
-    const user = req.body.user;
-    const pass = req.body.pass;
-    const role = req.body.role;
+    const { name, user, pass, role, action } = req.body;
     let hash = await bcryptjs.hash(pass, 8);
-    if (req.body.action == "store") {
+    if (action === "store") {
       try {
-        const userStore = User.create({
-          name: name,
-          user: user,
+        const userStore = await User.create({
+          name, user,
           password:hash,
           roleId:role
         });
-        setTimeout(function () {
-          res.redirect("/usuarios");
-        }, 1000);
+        res.redirect("/usuarios");
+        /*setTimeout(function () {
+        }, 1000);*/
       } catch (error) {
         console.error("Unable to connect to the database:", error);
       }
     }else{
       const upUser = await User.update(
-        { name: name },
+        { name },
         {
           where: {
             id: parseInt(id),
           },
         }
       );
-      setTimeout(function () {
-        res.redirect("/usuarios");
-      }, 1000);
+      res.redirect("/usuarios");
+      /*setTimeout(function () {
+      }, 1000);*/
     }
   } catch (error) {
     console.log(error);
   }
 };
 
-exports.delete = async (req, res, next) => {
+const Delete = async (req, res, next) => {
   const id = req.body.id;
   try {
     const upUser = await User.update(
@@ -81,7 +77,7 @@ exports.delete = async (req, res, next) => {
   }
 };
 
-exports.login = async (req, res) => {
+const login = async (req, res) => {
   try {
     const { user, pass } = req.body
     if (!user || !pass) {
@@ -94,7 +90,8 @@ exports.login = async (req, res) => {
         timer: false,
         ruta: "login",
       });
-    } else {
+    } 
+    else {
       conexion.query(
         "SELECT * FROM users WHERE user=?",
         [user],
@@ -144,7 +141,7 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.isAuthenticated = async (req, res, next) => {
+const isAuthenticated = async (req, res, next) => {
   if (req.cookies.jwt) {
     try {
       const decodificada = await promisify(jwt.verify)(
@@ -171,7 +168,17 @@ exports.isAuthenticated = async (req, res, next) => {
   }
 };
 
-exports.logout = async (req, res) => {
+const logout = async (req, res) => {
   res.clearCookie("jwt");
   return res.redirect("/");
 };
+
+
+module.exports = {
+  index,
+  action,
+  Delete,
+  login,
+  isAuthenticated,
+  logout
+}

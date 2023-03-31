@@ -7,6 +7,10 @@ var bodyParser = require('body-parser')
 
 const app = express();
 
+app.use(cors({
+    origin: ['http://localhost:3000']
+}))
+
 app.use(cors())
 
 /** motor de plantilla */

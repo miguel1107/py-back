@@ -1,9 +1,12 @@
 const express = require('express')
 const router = express.Router();
-const apiController = require('../controllers/apiController');
+const { login, getAllProducts, revalidarToken } = require('../controllers/apiController');
+const { validarJWT } = require('../middleware/validar_jwt');
 
-router.post('/login',apiController.login);
-router.get('/logout',apiController.logout);
+router.post('/login', login)
+router.get('/renew', [validarJWT], revalidarToken)
+router.get('/product', [validarJWT], getAllProducts)
+//router.get('/logout',apiController.logout);
 
 
 
