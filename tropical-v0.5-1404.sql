@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 14-03-2023 a las 15:41:57
--- Versión del servidor: 5.7.24
--- Versión de PHP: 7.4.10
+-- Tiempo de generación: 31-03-2023 a las 11:23:01
+-- Versión del servidor: 8.0.30
+-- Versión de PHP: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,16 +28,16 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `clients` (
-  `id` int(10) UNSIGNED NOT NULL,
+  `id` int UNSIGNED NOT NULL,
   `document` varchar(15) NOT NULL,
   `name` varchar(100) NOT NULL,
   `last_name` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `user_id` int(10) UNSIGNED NOT NULL,
-  `state` int(1) NOT NULL DEFAULT '1',
+  `user_id` int UNSIGNED NOT NULL,
+  `state` int NOT NULL DEFAULT '1',
   `createdAt` timestamp NULL DEFAULT NULL,
   `updatedAt` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -46,13 +46,13 @@ CREATE TABLE `clients` (
 --
 
 CREATE TABLE `permissions` (
-  `id` int(10) UNSIGNED NOT NULL,
+  `id` int UNSIGNED NOT NULL,
   `name` varchar(50) NOT NULL,
   `description` varchar(100) NOT NULL,
-  `state` int(1) NOT NULL DEFAULT '1',
+  `state` int NOT NULL DEFAULT '1',
   `createdAt` timestamp NULL DEFAULT NULL,
   `updatedAt` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Volcado de datos para la tabla `permissions`
@@ -77,12 +77,12 @@ INSERT INTO `permissions` (`id`, `name`, `description`, `state`, `createdAt`, `u
 --
 
 CREATE TABLE `presentations` (
-  `id` int(10) UNSIGNED NOT NULL,
+  `id` int UNSIGNED NOT NULL,
   `name` varchar(50) NOT NULL,
-  `state` int(1) NOT NULL,
+  `state` int NOT NULL,
   `createdAt` timestamp NULL DEFAULT NULL,
   `updatedAt` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Volcado de datos para la tabla `presentations`
@@ -100,20 +100,22 @@ INSERT INTO `presentations` (`id`, `name`, `state`, `createdAt`, `updatedAt`) VA
 --
 
 CREATE TABLE `products` (
-  `id` int(10) UNSIGNED NOT NULL,
+  `id` int UNSIGNED NOT NULL,
   `name` varchar(50) NOT NULL,
   `image` text NOT NULL,
-  `state` int(1) NOT NULL DEFAULT '1',
+  `state` int NOT NULL DEFAULT '1',
   `createdAt` timestamp NULL DEFAULT NULL,
   `updatedAt` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Volcado de datos para la tabla `products`
 --
 
 INSERT INTO `products` (`id`, `name`, `image`, `state`, `createdAt`, `updatedAt`) VALUES
-(1, 'test', 'file-bd-mster.PNG', 1, '2023-02-27 23:58:13', '2023-02-27 23:58:13');
+(1, 'test', 'file-bd-mster.PNG', 1, '2023-02-27 23:58:13', '2023-02-27 23:58:13'),
+(2, 'jugodepera', 'file-android.png', 1, '2023-03-26 15:45:16', '2023-03-26 15:45:16'),
+(3, 'sandwitch', 'file-apple.png', 1, '2023-03-26 15:46:51', '2023-03-26 15:46:51');
 
 -- --------------------------------------------------------
 
@@ -122,23 +124,23 @@ INSERT INTO `products` (`id`, `name`, `image`, `state`, `createdAt`, `updatedAt`
 --
 
 CREATE TABLE `product_presentations` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `productId` int(10) UNSIGNED NOT NULL,
-  `presentationId` int(10) UNSIGNED NOT NULL,
+  `id` int UNSIGNED NOT NULL,
+  `productId` int UNSIGNED NOT NULL,
+  `presentationId` int UNSIGNED NOT NULL,
   `price` decimal(11,2) NOT NULL,
-  `state` int(1) NOT NULL DEFAULT '1',
+  `state` int NOT NULL DEFAULT '1',
   `createdAt` timestamp NULL DEFAULT NULL,
   `updatedAt` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Volcado de datos para la tabla `product_presentations`
 --
 
 INSERT INTO `product_presentations` (`id`, `productId`, `presentationId`, `price`, `state`, `createdAt`, `updatedAt`) VALUES
-(1, 1, 1, '12.00', 1, '2023-02-27 23:58:43', '2023-02-27 23:58:43'),
-(2, 1, 2, '24.00', 1, '2023-02-27 23:58:50', '2023-02-27 23:58:50'),
-(3, 1, 3, '36.00', 1, '2023-02-27 23:58:57', '2023-02-27 23:58:57');
+(1, 1, 1, 12.00, 1, '2023-02-27 23:58:43', '2023-02-27 23:58:43'),
+(2, 2, 2, 24.00, 1, '2023-02-27 23:58:50', '2023-02-27 23:58:50'),
+(3, 3, 3, 36.00, 1, '2023-02-27 23:58:57', '2023-02-27 23:58:57');
 
 -- --------------------------------------------------------
 
@@ -147,12 +149,12 @@ INSERT INTO `product_presentations` (`id`, `productId`, `presentationId`, `price
 --
 
 CREATE TABLE `roles` (
-  `id` int(10) UNSIGNED NOT NULL,
+  `id` int UNSIGNED NOT NULL,
   `name` varchar(50) NOT NULL,
-  `state` int(1) NOT NULL DEFAULT '1',
+  `state` int NOT NULL DEFAULT '1',
   `createdAt` timestamp NULL DEFAULT NULL,
   `updatedAt` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Volcado de datos para la tabla `roles`
@@ -170,13 +172,13 @@ INSERT INTO `roles` (`id`, `name`, `state`, `createdAt`, `updatedAt`) VALUES
 --
 
 CREATE TABLE `role_has_permissions` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `roleId` int(10) UNSIGNED NOT NULL,
-  `permissionId` int(10) UNSIGNED NOT NULL,
-  `state` int(1) NOT NULL DEFAULT '1',
+  `id` int UNSIGNED NOT NULL,
+  `roleId` int UNSIGNED NOT NULL,
+  `permissionId` int UNSIGNED NOT NULL,
+  `state` int NOT NULL DEFAULT '1',
   `createdAt` timestamp NULL DEFAULT NULL,
   `updatedAt` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -185,19 +187,19 @@ CREATE TABLE `role_has_permissions` (
 --
 
 CREATE TABLE `sales` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `client_id` int(10) UNSIGNED NOT NULL,
+  `id` int UNSIGNED NOT NULL,
+  `client_id` int UNSIGNED NOT NULL,
   `date` timestamp NOT NULL,
   `amount` decimal(10,2) NOT NULL,
   `phone` varchar(10) NOT NULL,
   `latitud` varchar(100) DEFAULT NULL,
   `longitud` varchar(100) DEFAULT NULL,
   `address` text,
-  `zone_id` int(10) UNSIGNED DEFAULT NULL,
-  `state` int(1) NOT NULL COMMENT '1:registrado 2:aceptado 3:en proceso 4:entregado 5:cancelado',
+  `zone_id` int UNSIGNED DEFAULT NULL,
+  `state` int NOT NULL COMMENT '1:registrado 2:aceptado 3:en proceso 4:entregado 5:cancelado',
   `createdAt` timestamp NULL DEFAULT NULL,
   `updatedAt` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -206,14 +208,14 @@ CREATE TABLE `sales` (
 --
 
 CREATE TABLE `sale_details` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `sale_id` int(10) UNSIGNED NOT NULL,
-  `product_presentation_id` int(10) UNSIGNED NOT NULL,
-  `quantity` int(11) NOT NULL,
+  `id` int UNSIGNED NOT NULL,
+  `sale_id` int UNSIGNED NOT NULL,
+  `product_presentation_id` int UNSIGNED NOT NULL,
+  `quantity` int NOT NULL,
   `price` decimal(11,2) NOT NULL,
   `createdAt` timestamp NULL DEFAULT NULL,
   `updatedAt` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -222,15 +224,15 @@ CREATE TABLE `sale_details` (
 --
 
 CREATE TABLE `users` (
-  `id` int(10) UNSIGNED NOT NULL,
+  `id` int UNSIGNED NOT NULL,
   `name` text NOT NULL,
   `user` varchar(20) NOT NULL,
   `password` text NOT NULL,
-  `roleId` int(10) UNSIGNED NOT NULL,
-  `state` int(1) NOT NULL DEFAULT '1',
+  `roleId` int UNSIGNED NOT NULL,
+  `state` int NOT NULL DEFAULT '1',
   `createdAt` timestamp NULL DEFAULT NULL,
   `updatedAt` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Volcado de datos para la tabla `users`
@@ -247,18 +249,18 @@ INSERT INTO `users` (`id`, `name`, `user`, `password`, `roleId`, `state`, `creat
 --
 
 CREATE TABLE `zones` (
-  `id` int(10) UNSIGNED NOT NULL,
+  `id` int UNSIGNED NOT NULL,
   `name` varchar(100) NOT NULL,
   `price` decimal(11,2) NOT NULL,
-  `state` int(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `state` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Volcado de datos para la tabla `zones`
 --
 
 INSERT INTO `zones` (`id`, `name`, `price`, `state`) VALUES
-(1, 'zona 12', '21.00', 1);
+(1, 'zona 12', 21.00, 1);
 
 --
 -- Índices para tablas volcadas
@@ -348,67 +350,67 @@ ALTER TABLE `zones`
 -- AUTO_INCREMENT de la tabla `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `presentations`
 --
 ALTER TABLE `presentations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `product_presentations`
 --
 ALTER TABLE `product_presentations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `role_has_permissions`
 --
 ALTER TABLE `role_has_permissions`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `sale_details`
 --
 ALTER TABLE `sale_details`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `zones`
 --
 ALTER TABLE `zones`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
