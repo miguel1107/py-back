@@ -252,7 +252,9 @@ CREATE TABLE `zones` (
   `id` int UNSIGNED NOT NULL,
   `name` varchar(100) NOT NULL,
   `price` decimal(11,2) NOT NULL,
-  `state` int NOT NULL
+  `state` int NOT NULL,
+  `createdAt` timestamp NULL DEFAULT NULL,
+  `updatedAt` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --

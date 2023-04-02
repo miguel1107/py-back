@@ -8,8 +8,12 @@ const index = async (req,res,next)=>{
     /*conexion.query("SELECT * FROM zones WHERE state=1 ", async(error,results)=>{
         res.render('zonas',{data:results})
     });*/
-    const results = await Zone.findAll({ where: { state: 1 } })
-    res.render('zonas',{data:results})
+    try {
+        const results = await Zone.findAll({ where: { state: 1 } })
+        res.render('zonas',{data:results})
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 const action = async (req,res,next)=>{
