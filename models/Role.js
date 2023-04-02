@@ -9,9 +9,11 @@ const Role = sequelize.define('role', {
   },
   name: {
     type: DataTypes.STRING,
+    allowNull: false
   },
   state: {
     type: DataTypes.INTEGER,
+    allowNull: false
   },
 }, {
     tableName: 'roles'

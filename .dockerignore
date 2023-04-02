@@ -1,6 +1,5 @@
 node_modules/
 tropical_db/
-database/
 .git/
 .gitignore
-controllers/zoneController.js
+package-lock.json

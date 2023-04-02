@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../conexion/conexion')
 
-const Presentation = sequelize.define('presentation', {
+const Zone = sequelize.define('zone', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -14,12 +14,9 @@ const Presentation = sequelize.define('presentation', {
   state: {
     type: DataTypes.INTEGER,
     allowNull: false
-  },
+  }
 }, {
-    tableName: 'presentations'
+    tableName: 'zones'
 });
 
-// `sequelize.define` also returns the model
-// console.log(Presentation === sequelize.models.Presentation); // true
-
-module.exports=Presentation;
+module.exports=Zone;

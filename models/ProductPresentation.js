@@ -9,25 +9,29 @@ const ProductPresentation = sequelize.define('productpresentation', {
     autoIncrement: true,
     primaryKey: true
   },
-    productId: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: Product, // 'Movies' would also work
-            key: 'id'
-          }
+  productId: {
+    type: DataTypes.INTEGER,
+    references: {
+        model: Product,
+        key: 'id'
     },
-    presentationId: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: Presentation, // 'Movies' would also work
-            key: 'id'
-          }
+    allowNull: false
+  },
+  presentationId: {
+    type: DataTypes.INTEGER,
+    references: {
+        model: Presentation,
+        key: 'id'
     },
+    allowNull: false
+  },
   price:{
     type: DataTypes.DECIMAL,
+    allowNull: false
   },
   state: {
     type: DataTypes.INTEGER,
+    allowNull: false
   },
 }, {
     tableName: 'product_presentations'

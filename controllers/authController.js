@@ -1,9 +1,11 @@
 const jwt = require("jsonwebtoken");
-const bcryptjs = require("bcryptjs");
 //const conexion = require("../database/db");
 const { promisify } = require("util");
+const bcryptjs = require("bcryptjs");
+const {generarJWT} = require("../helpers/generar_jwt")
 const User = require('../models/User')
-const Role = require('../models/Role')
+const Role = require('../models/Role');
+const { obtMensajes } = require("../helpers/db_validators");
 
 /** index */
 const index = async (req, res, next) => {
@@ -81,7 +83,28 @@ const Delete = async (req, res, next) => {
 const login = async (req, res) => {
   try {
     const { user, pass } = req.body
-    if (!user || !pass) {
+    if(!user || !pass) return res.render("login", await obtMensajes(0))
+    // verificar si el usuario existe
+    const usuario = await User.findOne({where: { user }})
+    if( !usuario ) return res.render('login', await obtMensajes(1))
+    // Verificar si el usuario esta activo
+    if( usuario.state === 0 ) return res.render('login', await obtMensajes(1))
+    // Verificar la contraseña
+    const validPass = bcryptjs.compareSync(pass, usuario.password)
+    if( !validPass ) return res.render('login', await obtMensajes(1))
+    // Generar JWT
+    const token = await generarJWT(usuario.id)
+    // Generar Cookies
+    const cookiesOptions = {
+      expires: new Date(
+        Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+      ),
+      httpOnly: true,
+    }
+    // Enviar respuesta exitosa
+    res.cookie("jwt", token, cookiesOptions)
+    res.render("login", await obtMensajes(2))
+    /*if (!user || !pass) {
       res.render("login", {
         alert: true,
         alertTitle: "Advertencia",
@@ -102,7 +125,7 @@ const login = async (req, res) => {
         timer: false,
         ruta: "login",
       })
-      /*conexion.query(
+      conexion.query(
         "SELECT * FROM users WHERE user=?",
         [user],
         async (error, results) => {
@@ -124,7 +147,6 @@ const login = async (req, res) => {
             const token = jwt.sign({ id: id }, process.env.JWT_SECRETO, {
               expiresIn: process.env.JWT_TIEMPO_EXPIRA,
             });
-
             const cookiesOptions = {
               expires: new Date(
                 Date.now() +
@@ -144,15 +166,31 @@ const login = async (req, res) => {
             });
           }
         }
-      )*/ // aqui termina conexion.query
-    }
-  } catch (error) {
+      ) // aqui termina conexion.query
+    }*/
+  } 
+  catch (error) {
     console.log(error);
   }
 }
 
 const isAuthenticated = async (req, res, next) => {
-  next()
+  try {
+    const token = req.cookies.jwt
+    if(token){
+      const { id } = promisify(jwt.verify)(token, process.env.JWT_SECRETO)
+      const results = await User.findByPk(id)
+      if(!results) return next()
+      req.user = results
+      return next()
+    }
+    else{
+      res.redirect("/login")
+    }
+  } catch (error) {
+    console.log(error)
+    return next()
+  }
   /*if (req.cookies.jwt) {
     try {
       const decodificada = await promisify(jwt.verify)(
@@ -183,7 +221,6 @@ const logout = async (req, res) => {
   res.clearCookie("jwt");
   return res.redirect("/");
 }
-
 
 module.exports = {
   index,
