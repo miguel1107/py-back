@@ -251,7 +251,7 @@ INSERT INTO `users` (`id`, `name`, `user`, `password`, `roleId`, `state`, `creat
 CREATE TABLE `zones` (
   `id` int UNSIGNED NOT NULL,
   `name` varchar(100) NOT NULL,
-  `price` decimal(11,2) NOT NULL,
+  /*`price` decimal(11,2) NOT NULL,*/
   `state` int NOT NULL,
   `createdAt` timestamp NULL DEFAULT NULL,
   `updatedAt` timestamp NULL DEFAULT NULL
@@ -261,8 +261,42 @@ CREATE TABLE `zones` (
 -- Volcado de datos para la tabla `zones`
 --
 
-INSERT INTO `zones` (`id`, `name`, `price`, `state`) VALUES
-(1, 'zona 12', 21.00, 1);
+INSERT INTO `zones` (`id`, `name`, `state`) VALUES
+(1, 'Amelia Denis De Icaza', 1),
+(2, 'Belisario Porras', 1),
+(3, 'José Domingo Espinar', 1),
+(4, 'Mateo Iturralde', 1),
+(5, 'Victoriano Lorenzo', 1),
+(6, 'Arnulfo Arias', 1),
+(7, 'Belisario Frías', 1),
+(8, 'Omar Torrijos', 1),
+(9, 'Rufina Alfaro', 1),
+(10, '24 de Diciembre', 1),
+(11, 'Alcalde Díaz', 1),
+(12, 'Ancón', 1),
+(13, 'Betania', 1),
+(14, 'Bella Vista', 1),
+(15, 'Calidonia', 1),
+(16, 'Caimitillo', 1),
+(17, 'Chilibre', 1),
+(18, 'Don Bosco', 1),
+(19, 'El Chorrillo', 1),
+(20, 'Curundú', 1),
+(21, 'Ernesto Córdoba Campos', 1),
+(22, 'Juan Díaz', 1),
+(23, 'Las Cumbres', 1),
+(24, 'Las Garzas', 1),
+(25, 'Las Mañanitas', 1),
+(26, 'Pacora', 1),
+(27, 'Parque Lefevre', 1),
+(28, 'Pedregal', 1),
+(29, 'Pueblo Nuevo', 1),
+(30, 'Río Abajo', 1),
+(31, 'San Felipe', 1),
+(32, 'San Francisco', 1),
+(33, 'San Martín', 1),
+(34, 'Santa Ana', 1),
+(35, 'Tocumen', 1);
 
 --
 -- Índices para tablas volcadas
