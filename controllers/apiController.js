@@ -6,7 +6,7 @@ const fs = require("fs")
 const path = require("path");
 const ProductPresentation = require("../models/ProductPresentation");
 
-/** login */
+/* login */
 const login = async (req, res) => {
   try {
     const { user, pass } = req.body

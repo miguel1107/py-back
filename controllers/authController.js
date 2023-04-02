@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcryptjs = require("bcryptjs");
-const conexion = require("../database/db");
+//const conexion = require("../database/db");
 const { promisify } = require("util");
 const User = require('../models/User')
 const Role = require('../models/Role')
@@ -22,7 +22,7 @@ const index = async (req, res, next) => {
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }
-};
+}
 
 /** regiter */
 const action = async (req, res) => {
@@ -31,7 +31,8 @@ const action = async (req, res) => {
     let hash = await bcryptjs.hash(pass, 8);
     if (action === "store") {
       try {
-        const userStore = await User.create({
+        /*const userStore =*/ 
+        await User.create({
           name, user,
           password:hash,
           roleId:role
@@ -58,7 +59,7 @@ const action = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-};
+}
 
 const Delete = async (req, res, next) => {
   const id = req.body.id;
@@ -75,7 +76,7 @@ const Delete = async (req, res, next) => {
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }
-};
+}
 
 const login = async (req, res) => {
   try {
@@ -92,7 +93,16 @@ const login = async (req, res) => {
       });
     } 
     else {
-      conexion.query(
+      res.render('login', {
+        alert: true,
+        alertTitle: "Error",
+        alertMessage: "Usuario y/o contraseña incorrecta",
+        alertIcon: "error",
+        showConfirmButton: true,
+        timer: false,
+        ruta: "login",
+      })
+      /*conexion.query(
         "SELECT * FROM users WHERE user=?",
         [user],
         async (error, results) => {
@@ -121,7 +131,7 @@ const login = async (req, res) => {
                   process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
               ),
               httpOnly: true,
-            };
+            }
             res.cookie("jwt", token, cookiesOptions);
             res.render("login", {
               alert: true,
@@ -134,15 +144,16 @@ const login = async (req, res) => {
             });
           }
         }
-      );
+      )*/ // aqui termina conexion.query
     }
   } catch (error) {
     console.log(error);
   }
-};
+}
 
 const isAuthenticated = async (req, res, next) => {
-  if (req.cookies.jwt) {
+  next()
+  /*if (req.cookies.jwt) {
     try {
       const decodificada = await promisify(jwt.verify)(
         req.cookies.jwt,
@@ -165,13 +176,13 @@ const isAuthenticated = async (req, res, next) => {
     }
   } else {
     res.redirect("/login");
-  }
-};
+  }*/
+}
 
 const logout = async (req, res) => {
   res.clearCookie("jwt");
   return res.redirect("/");
-};
+}
 
 
 module.exports = {

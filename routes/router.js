@@ -4,7 +4,7 @@ const authController = require('../controllers/authController')
 const mantenimientoController = require('../controllers/mantenimientosController')
 const clienteController = require('../controllers/clientesController')
 const presentationController = require('../controllers/presentationController')
-const zoneController = require('../controllers/zoneController')
+//const zoneController = require('../controllers/zoneController')
 const roleController = require('../controllers/roleController')
 const permissionController = require('../controllers/permissionController')
 
@@ -42,13 +42,13 @@ router.post('/user/delete', authController.isAuthenticated,authController.Delete
 router.get('/productos', authController.isAuthenticated,mantenimientoController.index);
 router.post('/product/action', upload.single('file'),authController.isAuthenticated,mantenimientoController.action);
 router.get('/product/show/:id', authController.isAuthenticated,mantenimientoController.show);
-router.post('/product/delete', authController.isAuthenticated,mantenimientoController.delete);
+router.post('/product/delete', authController.isAuthenticated,mantenimientoController.Delete);
 router.post('/product/addpresentation', authController.isAuthenticated,mantenimientoController.addpresentation);
 router.post('/product/delpresentation', authController.isAuthenticated,mantenimientoController.delpresentation);
 
 /** mantenimiento de clientes */
 router.get('/clientes', authController.isAuthenticated,clienteController.index);
-router.post('/client/action', /*authController.isAuthenticated,*/clienteController.action);
+router.post('/client/action', authController.isAuthenticated,clienteController.action);
 router.get('/client/show/:id', authController.isAuthenticated,clienteController.show);
 router.post('/client/delete', authController.isAuthenticated,clienteController.Delete);
 /** mantenimiento de presentaciones */
@@ -57,21 +57,21 @@ router.post('/presentation/action', authController.isAuthenticated,presentationC
 router.get('/presentation/show/:id', authController.isAuthenticated,presentationController.show);
 router.post('/presentation/delete', authController.isAuthenticated,presentationController.Delete);
 /** mantenimiento de zonas */
-router.get('/zonas', authController.isAuthenticated,zoneController.index);
+/*router.get('/zonas', authController.isAuthenticated,zoneController.index);
 router.post('/zone/action', authController.isAuthenticated,zoneController.action);
 router.get('/zone/show/:id', authController.isAuthenticated,zoneController.show);
-router.post('/zone/delete', authController.isAuthenticated,zoneController.delete);
-
+router.post('/zone/delete', authController.isAuthenticated,zoneController.Delete);
+*/
 /** mantenimiento de roles */
 router.get('/roles', authController.isAuthenticated,roleController.index);
 router.post('/role/action', authController.isAuthenticated,roleController.action);
 router.get('/role/show/:id', authController.isAuthenticated,roleController.show);
-router.post('/role/delete', authController.isAuthenticated,roleController.delete);
+router.post('/role/delete', authController.isAuthenticated,roleController.Delete);
 
 /** mantenimiento de permisos */
 router.get('/permisos', authController.isAuthenticated,permissionController.index);
 router.post('/permission/action', authController.isAuthenticated,permissionController.action);
 router.get('/permission/show/:id', authController.isAuthenticated,permissionController.show);
-router.post('/permission/delete', authController.isAuthenticated,permissionController.delete);
+router.post('/permission/delete', authController.isAuthenticated,permissionController.Delete);
 
 module.exports=router;

@@ -3,7 +3,7 @@ const jwt = require ('jsonwebtoken')
 const User = require ('../models/User')
 
 
-exports.validarJWT = async (req = request, res = response, next) => {
+const validarJWT = async (req = request, res = response, next) => {
     const token = req.header('x-token')
     if( !token ) return res.status(401).json({error: 'Usted no esta logueado en la aplicación'})
     try {
@@ -21,10 +21,10 @@ exports.validarJWT = async (req = request, res = response, next) => {
         next()
     } catch (error) {
         console.log(`Error: ${error}`)
-        return res.status(401).json({error})
+        return res.status(500).json({error})
     }
 }
 
-/*export{
+module.exports = {
     validarJWT
-}*/
+}

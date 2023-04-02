@@ -3,13 +3,13 @@ const bcryptjs = require('bcryptjs')
 const conexion = require('../database/db')
 const {promisify} = require('util')
 
-exports.index = async (req,res,next)=>{
+const index = async (req,res,next)=>{
     conexion.query("SELECT * FROM zones WHERE state=1 ", async(error,results)=>{
         res.render('zonas',{data:results})
     });
-};
+}
 
-exports.action = async (req,res,next)=>{
+const action = async (req,res,next)=>{
     const id = req.body.id;
     const name = req.body.name;
     const price = req.body.price;
@@ -25,9 +25,9 @@ exports.action = async (req,res,next)=>{
             res.redirect('/zonas');
         });
     }
-};
+}
 
-exports.show = async (req,res,next)=>{
+const show = async (req,res,next)=>{
     try {
         const id = req.params.id;
         conexion.query('SELECT * FROM zones WHERE id='+id,(error,results)=>{
@@ -37,9 +37,9 @@ exports.show = async (req,res,next)=>{
     } catch (error) {
         console.log(error);
     } 
-};
+}
 
-exports.delete = async (req, res,next)=>{
+const Delete = async (req, res,next)=>{
     try {
         const id = req.body.id;
         conexion.query('UPDATE zones SET state=0 WHERE id='+id,(error,results)=>{
@@ -49,4 +49,11 @@ exports.delete = async (req, res,next)=>{
     } catch (error) {
         console.log(error);
     }
-};
+}
+
+module.exports = {
+    index,
+    action,
+    show,
+    Delete
+}
