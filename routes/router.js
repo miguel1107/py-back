@@ -7,6 +7,7 @@ const presentationController = require('../controllers/presentationController')
 const zoneController = require('../controllers/zoneController')
 const roleController = require('../controllers/roleController')
 const permissionController = require('../controllers/permissionController')
+const pedidosController = require('./../controllers/pedidosController')
 
 var multer = require('multer');
 const storage = multer.diskStorage({
@@ -73,5 +74,15 @@ router.get('/permisos', authController.isAuthenticated,permissionController.inde
 router.post('/permission/action', authController.isAuthenticated,permissionController.action);
 router.get('/permission/show/:id', authController.isAuthenticated,permissionController.show);
 router.post('/permission/delete', authController.isAuthenticated,permissionController.delete);
+
+/** procesos */
+router.get('/pedidos', authController.isAuthenticated,pedidosController.index);
+router.get('/pedidos/getpresentation/:id',authController.isAuthenticated,pedidosController.gerPresentation)
+router.post('/pedidos/store', authController.isAuthenticated,pedidosController.store);
+
+router.get('/lista', authController.isAuthenticated,pedidosController.list);
+router.post('/lista', authController.isAuthenticated,pedidosController.lstPost);
+router.get('/lista/cancel/:id',authController.isAuthenticated,pedidosController.cancel);
+router.get('/lista/process/:id/:state',authController.isAuthenticated,pedidosController.process);
 
 module.exports=router;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 14-03-2023 a las 15:41:57
+-- Tiempo de generación: 18-04-2023 a las 18:05:42
 -- Versión del servidor: 5.7.24
 -- Versión de PHP: 7.4.10
 
@@ -38,6 +38,13 @@ CREATE TABLE `clients` (
   `createdAt` timestamp NULL DEFAULT NULL,
   `updatedAt` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `clients`
+--
+
+INSERT INTO `clients` (`id`, `document`, `name`, `last_name`, `email`, `user_id`, `state`, `createdAt`, `updatedAt`) VALUES
+(1, '74070643', 'miguel', 'cliente', 'mrp110793@gmail.com', 4, 1, '2023-03-25 17:47:14', '2023-03-25 17:47:14');
 
 -- --------------------------------------------------------
 
@@ -113,7 +120,8 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `image`, `state`, `createdAt`, `updatedAt`) VALUES
-(1, 'test', 'file-bd-mster.PNG', 1, '2023-02-27 23:58:13', '2023-02-27 23:58:13');
+(1, 'test', 'file-bd-mster.PNG', 1, '2023-02-27 23:58:13', '2023-02-27 23:58:13'),
+(2, 'gaseosa', 'file-bd-mster.PNG', 1, '2023-04-05 17:25:21', '2023-04-05 17:25:21');
 
 -- --------------------------------------------------------
 
@@ -138,7 +146,9 @@ CREATE TABLE `product_presentations` (
 INSERT INTO `product_presentations` (`id`, `productId`, `presentationId`, `price`, `state`, `createdAt`, `updatedAt`) VALUES
 (1, 1, 1, '12.00', 1, '2023-02-27 23:58:43', '2023-02-27 23:58:43'),
 (2, 1, 2, '24.00', 1, '2023-02-27 23:58:50', '2023-02-27 23:58:50'),
-(3, 1, 3, '36.00', 1, '2023-02-27 23:58:57', '2023-02-27 23:58:57');
+(3, 1, 3, '36.00', 1, '2023-02-27 23:58:57', '2023-04-05 17:43:31'),
+(4, 2, 3, '50.00', 1, '2023-04-05 17:44:11', '2023-04-05 17:44:11'),
+(5, 2, 1, '40.00', 1, '2023-04-05 17:44:22', '2023-04-05 17:44:22');
 
 -- --------------------------------------------------------
 
@@ -186,14 +196,14 @@ CREATE TABLE `role_has_permissions` (
 
 CREATE TABLE `sales` (
   `id` int(10) UNSIGNED NOT NULL,
-  `client_id` int(10) UNSIGNED NOT NULL,
-  `date` timestamp NOT NULL,
+  `clientId` int(10) UNSIGNED NOT NULL,
+  `date` date NOT NULL,
   `amount` decimal(10,2) NOT NULL,
   `phone` varchar(10) NOT NULL,
   `latitud` varchar(100) DEFAULT NULL,
   `longitud` varchar(100) DEFAULT NULL,
   `address` text,
-  `zone_id` int(10) UNSIGNED DEFAULT NULL,
+  `zoneId` int(10) UNSIGNED DEFAULT NULL,
   `state` int(1) NOT NULL COMMENT '1:registrado 2:aceptado 3:en proceso 4:entregado 5:cancelado',
   `createdAt` timestamp NULL DEFAULT NULL,
   `updatedAt` timestamp NULL DEFAULT NULL
@@ -207,8 +217,8 @@ CREATE TABLE `sales` (
 
 CREATE TABLE `sale_details` (
   `id` int(10) UNSIGNED NOT NULL,
-  `sale_id` int(10) UNSIGNED NOT NULL,
-  `product_presentation_id` int(10) UNSIGNED NOT NULL,
+  `saleId` int(10) UNSIGNED NOT NULL,
+  `productPresentationId` int(10) UNSIGNED NOT NULL,
   `quantity` int(11) NOT NULL,
   `price` decimal(11,2) NOT NULL,
   `createdAt` timestamp NULL DEFAULT NULL,
@@ -238,7 +248,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `user`, `password`, `roleId`, `state`, `createdAt`, `updatedAt`) VALUES
 (1, 'Admin 1', 'admin', '$2a$08$EWv1bLJHjWq2CCc7QfgkEeMdsCyZsa1Rk7KVYlRgJ.0xaw5T.ReXO', 1, 1, NULL, NULL),
-(3, 'test2', 'test2', '$2a$08$CV6YUPwl14dXg1ierP22GOJ.tw.BLrcpVuTF0.gxLU4xhd9E6rFaW', 2, 0, '2023-03-13 01:33:08', '2023-03-13 01:45:34');
+(3, 'test2', 'test2', '$2a$08$CV6YUPwl14dXg1ierP22GOJ.tw.BLrcpVuTF0.gxLU4xhd9E6rFaW', 2, 0, '2023-03-13 01:33:08', '2023-03-13 01:45:34'),
+(4, 'miguel cliente', '74070643', '$2a$08$/tRILT1bJMggMkbD8c.WdusY/KmxUiBzGCMvG5Em51FZgg7Z1uD0.', 2, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -316,16 +327,16 @@ ALTER TABLE `role_has_permissions`
 --
 ALTER TABLE `sales`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `client_id` (`client_id`),
-  ADD KEY `zone_id` (`zone_id`);
+  ADD KEY `client_id` (`clientId`),
+  ADD KEY `zone_id` (`zoneId`);
 
 --
 -- Indices de la tabla `sale_details`
 --
 ALTER TABLE `sale_details`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `sale_id` (`sale_id`),
-  ADD KEY `product_presentation_id` (`product_presentation_id`);
+  ADD KEY `sale_id` (`saleId`),
+  ADD KEY `product_presentation_id` (`productPresentationId`);
 
 --
 -- Indices de la tabla `users`
@@ -348,7 +359,7 @@ ALTER TABLE `zones`
 -- AUTO_INCREMENT de la tabla `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `permissions`
@@ -366,13 +377,13 @@ ALTER TABLE `presentations`
 -- AUTO_INCREMENT de la tabla `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `product_presentations`
 --
 ALTER TABLE `product_presentations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
@@ -402,7 +413,7 @@ ALTER TABLE `sale_details`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `zones`
@@ -438,15 +449,15 @@ ALTER TABLE `role_has_permissions`
 -- Filtros para la tabla `sales`
 --
 ALTER TABLE `sales`
-  ADD CONSTRAINT `sales_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`),
-  ADD CONSTRAINT `sales_ibfk_2` FOREIGN KEY (`zone_id`) REFERENCES `zones` (`id`);
+  ADD CONSTRAINT `sales_ibfk_1` FOREIGN KEY (`clientId`) REFERENCES `clients` (`id`),
+  ADD CONSTRAINT `sales_ibfk_2` FOREIGN KEY (`zoneId`) REFERENCES `zones` (`id`);
 
 --
 -- Filtros para la tabla `sale_details`
 --
 ALTER TABLE `sale_details`
-  ADD CONSTRAINT `sale_details_ibfk_2` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`id`),
-  ADD CONSTRAINT `sale_details_ibfk_3` FOREIGN KEY (`product_presentation_id`) REFERENCES `product_presentations` (`id`);
+  ADD CONSTRAINT `sale_details_ibfk_2` FOREIGN KEY (`saleId`) REFERENCES `sales` (`id`),
+  ADD CONSTRAINT `sale_details_ibfk_3` FOREIGN KEY (`productPresentationId`) REFERENCES `product_presentations` (`id`);
 
 --
 -- Filtros para la tabla `users`
