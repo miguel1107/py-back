@@ -82,7 +82,6 @@ const action = async (req,res,next)=>{
 const show = async (req,res,next)=>{
     const id = req.params.id;
     try {
-        //let cliente = await Client.findAll({
         const cliente = await Client.findAll({
             where: {
                 id: parseInt(id)

@@ -5,6 +5,7 @@ const Product = require("../models/Product");
 const fs = require("fs")
 const path = require("path");
 const ProductPresentation = require("../models/ProductPresentation");
+const Presentation = require("../models/Presentation");
 
 /* login */
 const login = async (req, res) => {
@@ -31,6 +32,13 @@ const login = async (req, res) => {
   }
 }
 
+/* Recuperar contraseña */
+const resetPassword = async (req, res) => {
+  const { user } = req.body
+  /*const userExists =*/ await User.findOne({where: { user, status: 1 }})
+}
+
+/* Restablecer token */
 const revalidarToken = async (req, res) => {
   try {
     const { usuario } = req
@@ -57,19 +65,27 @@ const getAllProducts = async (req, res) => {
         include: [
           {
             model: ProductPresentation,
-            attributes: ['price'] 
+            attributes: ['price'],
+            include: [
+              {
+                model: Presentation,
+                attributes: ['name']
+              }
+            ] 
           }
         ],
         attributes: { exclude: ['createdAt', 'updatedAt'] }
       }
     )
-    productos = productos.map( (p,i) => {
+    productos = productos.map( (p) => {
         p.image = `data:image/gif;base64,${fs.readFileSync(path.join(__dirname, '../public/img/product/', p.image), 'base64')}`
         const {productpresentation, ...rest} = p.toJSON()
         const price = productpresentation ? productpresentation.price : 0
+        const presentation = productpresentation.presentation.name
         return {
           ...rest,
-          price
+          price,
+          presentation
         }
       }
     )
@@ -80,4 +96,4 @@ const getAllProducts = async (req, res) => {
   }
 }
 
-module.exports = { login, revalidarToken, getAllProducts }
+module.exports = { login, resetPassword, revalidarToken, getAllProducts }
