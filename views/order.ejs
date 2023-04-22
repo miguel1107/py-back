@@ -392,7 +392,7 @@
                 html += "<td>"+parseFloat(element.price).toFixed(2)+"</td>";
                 html += "<td>"+parseFloat(element.quantity).toFixed(2)+"</td>";
                 html += "<td>"+parseFloat(element.subtotal).toFixed(2)+"</td>";
-                html += "<td align='center'><i style='color:red' class='delete fas fa-trash'></i></td>";
+                html += "<td align='center'><i style='color:red' class='delete fas fa-trash' data-index='" + index + "'></i></td>";
                 html += "</tr>";
               });
               html += "<tr>";
@@ -406,6 +406,12 @@
             }
             
             $('#bodyTable').html(html);
+
+            $('.delete').on('click', function() {
+              const index = $(this).data('index');
+              carrito.splice(index, 1);
+              llenaCarrito(); // Vuelve a cargar la tabla del carrito actualizada
+            });
         }
 
         $('.delete').click(function(){
