@@ -27,6 +27,7 @@ const RoleHasPermission = sequelize.define(
     },
     state: {
       type: DataTypes.INTEGER,
+      allowNull: false
     },
   },
   {

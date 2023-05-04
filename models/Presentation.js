@@ -9,9 +9,11 @@ const Presentation = sequelize.define('presentation', {
   },
   name: {
     type: DataTypes.STRING,
+    allowNull: false
   },
   state: {
     type: DataTypes.INTEGER,
+    allowNull: false
   },
 }, {
     tableName: 'presentations'

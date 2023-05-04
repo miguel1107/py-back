@@ -37,13 +37,13 @@ router.post('/login',authController.login);
 router.get('/logout',authController.logout);
 router.get('/usuarios', authController.isAuthenticated,authController.index);
 router.post('/user/action',authController.isAuthenticated,authController.action);
-router.post('/user/delete', authController.isAuthenticated,authController.delete);
+router.post('/user/delete', authController.isAuthenticated,authController.Delete);
 
 /** controller mantenimiento */
 router.get('/productos', authController.isAuthenticated,mantenimientoController.index);
 router.post('/product/action', upload.single('file'),authController.isAuthenticated,mantenimientoController.action);
 router.get('/product/show/:id', authController.isAuthenticated,mantenimientoController.show);
-router.post('/product/delete', authController.isAuthenticated,mantenimientoController.delete);
+router.post('/product/delete', authController.isAuthenticated,mantenimientoController.Delete);
 router.post('/product/addpresentation', authController.isAuthenticated,mantenimientoController.addpresentation);
 router.post('/product/delpresentation', authController.isAuthenticated,mantenimientoController.delpresentation);
 
@@ -51,29 +51,29 @@ router.post('/product/delpresentation', authController.isAuthenticated,mantenimi
 router.get('/clientes', authController.isAuthenticated,clienteController.index);
 router.post('/client/action', authController.isAuthenticated,clienteController.action);
 router.get('/client/show/:id', authController.isAuthenticated,clienteController.show);
-router.post('/client/delete', authController.isAuthenticated,clienteController.delete);
+router.post('/client/delete', authController.isAuthenticated,clienteController.Delete);
 /** mantenimiento de presentaciones */
 router.get('/presentaciones', authController.isAuthenticated,presentationController.index);
 router.post('/presentation/action', authController.isAuthenticated,presentationController.action);
 router.get('/presentation/show/:id', authController.isAuthenticated,presentationController.show);
-router.post('/presentation/delete', authController.isAuthenticated,presentationController.delete);
+router.post('/presentation/delete', authController.isAuthenticated,presentationController.Delete);
 /** mantenimiento de zonas */
 router.get('/zonas', authController.isAuthenticated,zoneController.index);
 router.post('/zone/action', authController.isAuthenticated,zoneController.action);
 router.get('/zone/show/:id', authController.isAuthenticated,zoneController.show);
-router.post('/zone/delete', authController.isAuthenticated,zoneController.delete);
+router.post('/zone/delete', authController.isAuthenticated,zoneController.Delete);
 
 /** mantenimiento de roles */
 router.get('/roles', authController.isAuthenticated,roleController.index);
 router.post('/role/action', authController.isAuthenticated,roleController.action);
 router.get('/role/show/:id', authController.isAuthenticated,roleController.show);
-router.post('/role/delete', authController.isAuthenticated,roleController.delete);
+router.post('/role/delete', authController.isAuthenticated,roleController.Delete);
 
 /** mantenimiento de permisos */
 router.get('/permisos', authController.isAuthenticated,permissionController.index);
 router.post('/permission/action', authController.isAuthenticated,permissionController.action);
 router.get('/permission/show/:id', authController.isAuthenticated,permissionController.show);
-router.post('/permission/delete', authController.isAuthenticated,permissionController.delete);
+router.post('/permission/delete', authController.isAuthenticated,permissionController.Delete);
 
 /** procesos */
 router.get('/pedidos', authController.isAuthenticated,pedidosController.index);

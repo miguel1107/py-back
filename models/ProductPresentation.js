@@ -9,40 +9,39 @@ const ProductPresentation = sequelize.define('productpresentation', {
     autoIncrement: true,
     primaryKey: true
   },
-//   product_id: {
-//     type: DataTypes.INTEGER,
-//   },
-    productId: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: Product, // 'Movies' would also work
-            key: 'id'
-          }
+  productId: {
+    type: DataTypes.INTEGER,
+    references: {
+        model: Product,
+        key: 'id'
     },
-    presentationId: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: Presentation, // 'Movies' would also work
-            key: 'id'
-          }
+    allowNull: false
+  },
+  presentationId: {
+    type: DataTypes.INTEGER,
+    references: {
+        model: Presentation,
+        key: 'id'
     },
-
+    allowNull: false
+  },
   price:{
     type: DataTypes.DECIMAL,
+    allowNull: false
   },
   state: {
     type: DataTypes.INTEGER,
+    allowNull: false
   },
 }, {
     tableName: 'product_presentations'
 });
 
-// `sequelize.define` also returns the model
-// console.log(productPresentation === sequelize.models.productPresentation); // true
 
 ProductPresentation.belongsTo(Product, { foreignKey: 'productId' });
+Product.hasOne(ProductPresentation, { foreignKey: 'productId' })
 ProductPresentation.belongsTo(Presentation, { foreignKey: 'presentationId' });
-// Product.belongsToMany(Presentation, { through: ProductPresentation });
-// Presentation.belongsToMany(Product, { through: ProductPresentation });
+Presentation.hasOne(ProductPresentation, { foreignKey: 'presentationId' })
+
 
 module.exports=ProductPresentation;

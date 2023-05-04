@@ -1,12 +1,14 @@
 const jwt = require("jsonwebtoken");
-const bcryptjs = require("bcryptjs");
-const conexion = require("../database/db");
+//const conexion = require("../database/db");
 const { promisify } = require("util");
+const bcryptjs = require("bcryptjs");
+const {generarJWT} = require("../helpers/generar_jwt")
 const User = require('../models/User')
-const Role = require('../models/Role')
+const Role = require('../models/Role');
+const { obtMensajes } = require("../helpers/db_validators");
 
 /** index */
-exports.index = async (req, res, next) => {
+const index = async (req, res, next) => {
   try {
     let data = await User.findAll({
       where: {
@@ -22,49 +24,46 @@ exports.index = async (req, res, next) => {
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }
-};
+}
 
 /** regiter */
-exports.action = async (req, res) => {
+const action = async (req, res) => {
   try {
-    const name = req.body.name;
-    const user = req.body.user;
-    const pass = req.body.pass;
-    const role = req.body.role;
+    const { name, user, pass, role, action } = req.body;
     let hash = await bcryptjs.hash(pass, 8);
-    if (req.body.action == "store") {
+    if (action === "store") {
       try {
-        const userStore = User.create({
-          name: name,
-          user: user,
+        /*const userStore =*/ 
+        await User.create({
+          name, user,
           password:hash,
           roleId:role
         });
-        setTimeout(function () {
-          res.redirect("/usuarios");
-        }, 1000);
+        res.redirect("/usuarios");
+        /*setTimeout(function () {
+        }, 1000);*/
       } catch (error) {
         console.error("Unable to connect to the database:", error);
       }
     }else{
       const upUser = await User.update(
-        { name: name },
+        { name },
         {
           where: {
             id: parseInt(id),
           },
         }
       );
-      setTimeout(function () {
-        res.redirect("/usuarios");
-      }, 1000);
+      res.redirect("/usuarios");
+      /*setTimeout(function () {
+      }, 1000);*/
     }
   } catch (error) {
     console.log(error);
   }
-};
+}
 
-exports.delete = async (req, res, next) => {
+const Delete = async (req, res, next) => {
   const id = req.body.id;
   try {
     const upUser = await User.update(
@@ -79,13 +78,33 @@ exports.delete = async (req, res, next) => {
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }
-};
+}
 
-exports.login = async (req, res) => {
+const login = async (req, res) => {
   try {
-    const user = req.body.user;
-    const pass = req.body.pass;
-    if (!user || !pass) {
+    const { user, pass } = req.body
+    if(!user || !pass) return res.render("login", await obtMensajes(0))
+    // verificar si el usuario existe
+    const usuario = await User.findOne({where: { user }})
+    if( !usuario ) return res.render('login', await obtMensajes(1))
+    // Verificar si el usuario esta activo
+    if( usuario.state === 0 ) return res.render('login', await obtMensajes(1))
+    // Verificar la contraseña
+    const validPass = bcryptjs.compareSync(pass, usuario.password)
+    if( !validPass ) return res.render('login', await obtMensajes(1))
+    // Generar JWT
+    const token = await generarJWT(usuario.id)
+    // Generar Cookies
+    const cookiesOptions = {
+      expires: new Date(
+        Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+      ),
+      httpOnly: true,
+    }
+    // Enviar respuesta exitosa
+    res.cookie("jwt", token, cookiesOptions)
+    res.render("login", await obtMensajes(2))
+    /*if (!user || !pass) {
       res.render("login", {
         alert: true,
         alertTitle: "Advertencia",
@@ -95,7 +114,17 @@ exports.login = async (req, res) => {
         timer: false,
         ruta: "login",
       });
-    } else {
+    } 
+    else {
+      res.render('login', {
+        alert: true,
+        alertTitle: "Error",
+        alertMessage: "Usuario y/o contraseña incorrecta",
+        alertIcon: "error",
+        showConfirmButton: true,
+        timer: false,
+        ruta: "login",
+      })
       conexion.query(
         "SELECT * FROM users WHERE user=?",
         [user],
@@ -118,15 +147,13 @@ exports.login = async (req, res) => {
             const token = jwt.sign({ id: id }, process.env.JWT_SECRETO, {
               expiresIn: process.env.JWT_TIEMPO_EXPIRA,
             });
-            console.log(token);
-
             const cookiesOptions = {
               expires: new Date(
                 Date.now() +
                   process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
               ),
               httpOnly: true,
-            };
+            }
             res.cookie("jwt", token, cookiesOptions);
             res.render("login", {
               alert: true,
@@ -135,19 +162,36 @@ exports.login = async (req, res) => {
               alertIcon: "success",
               showConfirmButton: false,
               timer: 800,
-              ruta: "",
+              ruta: ""
             });
           }
         }
-      );
-    }
-  } catch (error) {
+      ) // aqui termina conexion.query
+    }*/
+  } 
+  catch (error) {
     console.log(error);
   }
-};
+}
 
-exports.isAuthenticated = async (req, res, next) => {
-  if (req.cookies.jwt) {
+const isAuthenticated = async (req, res, next) => {
+  try {
+    const token = req.cookies.jwt
+    if(token){
+      const { id } = promisify(jwt.verify)(token, process.env.JWT_SECRETO)
+      const results = await User.findByPk(id)
+      if(!results) return next()
+      req.user = results
+      return next()
+    }
+    else{
+      res.redirect("/login")
+    }
+  } catch (error) {
+    console.log(error)
+    return next()
+  }
+  /*if (req.cookies.jwt) {
     try {
       const decodificada = await promisify(jwt.verify)(
         req.cookies.jwt,
@@ -170,10 +214,19 @@ exports.isAuthenticated = async (req, res, next) => {
     }
   } else {
     res.redirect("/login");
-  }
-};
+  }*/
+}
 
-exports.logout = async (req, res) => {
+const logout = async (req, res) => {
   res.clearCookie("jwt");
   return res.redirect("/");
-};
+}
+
+module.exports = {
+  index,
+  action,
+  Delete,
+  login,
+  isAuthenticated,
+  logout
+}

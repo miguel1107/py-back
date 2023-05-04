@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken')
+/*const jwt = require('jsonwebtoken')
 const bcryptjs = require('bcryptjs')
 const conexion = require('../database/db')
-const {promisify} = require('util')
+const {promisify} = require('util')*/
 
 const Product = require('../models/Product')
 const fs = require('fs');
@@ -9,7 +9,7 @@ const Presentation = require('../models/Presentation')
 const prodcutPresentation = require('../models/ProductPresentation')
 const ProductPresentation = require('../models/ProductPresentation')
 
-exports.index = async (req,res,next)=>{
+const index = async (req,res,next)=>{
     try {
         let data = await Product.findAll(
             {
@@ -38,16 +38,16 @@ exports.index = async (req,res,next)=>{
       } catch (error) {
         console.error('Unable to connect to the database:', error);
       }
-};
+}
 
-exports.action = async (req,res,next)=>{
+const action = async (req,res,next)=>{
     let path = req.file.fieldname + '-' + req.file.originalname;
     const id = req.body.id;
     const name = req.body.name;
 
     if (req.body.action == 'store') {
         try {
-            const prd = Product.create({name:name,image:path });
+            const prd = Product.create({name,image:path });
             setTimeout(function(){
                 res.redirect('/productos');
             }, 500);
@@ -55,7 +55,7 @@ exports.action = async (req,res,next)=>{
         console.error('Unable to connect to the database:', error);
         }
     } else {
-        const upProduct = await Product.update({name:name,image:image }, {
+        const upProduct = await Product.update({name,image:image }, {
             where: {
               id: parseInt(id)
             }
@@ -65,9 +65,9 @@ exports.action = async (req,res,next)=>{
             res.redirect('/productos');
         }, 1000);
     }
-};
+}
 
-exports.show = async (req,res,next)=>{
+const show = async (req,res,next)=>{
     const id = req.params.id;
     try {
         let product = await Product.findAll({
@@ -83,9 +83,9 @@ exports.show = async (req,res,next)=>{
     //     if(error){console.error(error);}
     //     res.json({data:results[0]})
     // });
-};
+}
 
-exports.delete = async (req, res,next)=>{
+const Delete = async (req, res,next)=>{
     const id = req.body.id;
     try {
         const upProduct = await Product.update({state:0 }, {
@@ -111,11 +111,11 @@ exports.delete = async (req, res,next)=>{
         } catch (error) {
         console.error("Unable to connect to the database:", error);
         }
-};
+}
 
 /*** presentaciones */
 
-exports.addpresentation = async (req,res,next)=>{
+const addpresentation = async (req,res,next)=>{
     try {
         let prodPresen = await ProductPresentation.create({productId:req.body.product_id, presentationId:req.body.presentation_id,price:req.body.price});
         res.json({state:0})
@@ -126,7 +126,7 @@ exports.addpresentation = async (req,res,next)=>{
 
 }
 
-exports.delpresentation = async (req,res,next)=>{
+const delpresentation = async (req,res,next)=>{
     try {
         const id = req.body.id;
         const upProductPresen = await ProductPresentation.update({state:0 }, {
@@ -140,4 +140,13 @@ exports.delpresentation = async (req,res,next)=>{
         console.error('Unable to connect to the database:', error);
     }    
 
+}
+
+module.exports = {
+    index,
+    action,
+    show,
+    Delete,
+    addpresentation,
+    delpresentation
 }

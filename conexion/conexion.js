@@ -1,7 +1,15 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize('tropical', 'root', '', {
-    host: 'localhost',
-    dialect: 'mysql'
-});
+const { Sequelize } = require('sequelize')
 
-module.exports=sequelize;
+const sequelize = new Sequelize(
+    process.env.DB_DATABASE,
+    process.env.DB_USER, 
+    //process.env.DB_PASS, 
+    '',
+    {
+        host: process.env.DB_HOST,
+        dialect: process.env.DB_DIAL,
+        port: process.env.DB_PORT
+    }
+)
+
+module.exports=sequelize

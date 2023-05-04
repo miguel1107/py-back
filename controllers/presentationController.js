@@ -1,18 +1,18 @@
-const jwt = require('jsonwebtoken')
-const bcryptjs = require('bcryptjs')
-const conexion = require('../database/db')
-const {promisify} = require('util')
+//const conexion = require('../database/db')
+const Presentation = require('../models/Presentation');
 
-exports.index = async (req,res,next)=>{
-    conexion.query("SELECT * FROM presentations WHERE state=1 ", async(error,results)=>{
+const index = async (req,res,next)=>{
+    /*conexion.query("SELECT * FROM presentations WHERE state=1 ", async(error,results)=>{
         res.render('presentaciones',{data:results})
-    });
-};
+    });*/
+    const results = await Presentation.findAll({ where: { state: 1 } })
+    res.render('presentaciones',{data:results})
+}
 
-exports.action = async (req,res,next)=>{
-    const id = req.body.id;
+const action = async (req,res,next)=>{
+    /*const id = req.body.id;
     const name = req.body.name;
-    if (req.body.action == 'store') {
+    if (action == 'store') {
         conexion.query('INSERT INTO presentations SET ?',{name:name,state:1},(error,results)=>{
             if(error){console.error(error);}
             res.redirect('/presentaciones');
@@ -23,29 +23,47 @@ exports.action = async (req,res,next)=>{
             if(error){console.error(error);}
             res.redirect('/presentaciones');
         });
+    }*/
+    try {
+        const { id, name, action } = req.body
+        action === 'store' ? await Presentation.create({name,state:1}) : await Presentation.update({name},{where: {id: parseInt(id)}})
+        res.redirect('/presentaciones')
+    } catch (error) {
+        console.error(`Error: ${error}`)
     }
-};
+}
 
-exports.show = async (req,res,next)=>{
+const show = async (req,res,next)=>{
     try {
         const id = req.params.id;
-        conexion.query('SELECT * FROM presentations WHERE id='+id,(error,results)=>{
+        /*conexion.query('SELECT * FROM presentations WHERE id='+id,(error,results)=>{
             if(error){console.error(error);}
             res.json({data:results[0]})
-        });
+        })*/
+        const results = await Presentation.findByPk(id)
+        res.json({data:results[0]})
     } catch (error) {
-        console.log(error);
+        console.log(error)
     }
-};
+}
 
-exports.delete = async (req, res,next)=>{
+const Delete = async (req, res,next)=>{
     try {
-        const id = req.body.id;
-        conexion.query('UPDATE presentations SET state=0 WHERE id='+id,(error,results)=>{
+        const id = req.body.id
+        /*conexion.query('UPDATE presentations SET state=0 WHERE id='+id,(error,results)=>{
             if(error){console.error(error);}
             res.json({state:1})
-        });
+        });*/
+        await Presentation.update({state: 0},{ where: { id } })
+        res.json({state: 1})
     } catch (error) {
-        console.log(error);
+        console.log(error)
     }
-};
+}
+
+module.exports = {
+    index,
+    action,
+    show,
+    Delete
+}

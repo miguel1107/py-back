@@ -9,21 +9,27 @@ const Client = sequelize.define('client', {
   },
   document: {
     type: DataTypes.STRING,
+    allowNull: false
   },
   name: {
     type: DataTypes.STRING,
+    allowNull: false
   },
   last_name: {
     type: DataTypes.STRING,
+    allowNull: false
   },
   email: {
     type: DataTypes.STRING,
+    allowNull: false
   },
   user_id: {
     type: DataTypes.INTEGER,
+    allowNull: false
   },
   state: {
     type: DataTypes.INTEGER,
+    allowNull: false
   },
 }, {
     tableName: 'clients'

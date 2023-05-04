@@ -1,25 +1,25 @@
-const jwt = require("jsonwebtoken");
+/*const jwt = require("jsonwebtoken");
 const bcryptjs = require("bcryptjs");
 const conexion = require("../database/db");
-const { promisify } = require("util");
+const { promisify } = require("util");*/
 
 const Role = require("../models/Role");
 
-exports.index = async (req, res, next) => {
+const index = async (req, res, next) => {
   try {
-    let data = await Role.findAll({
+    const data = await Role.findAll({
       where: {
         state: 1,
       },
-    });
-    res.render("roles", { data: data });
+    })
+    res.render("roles", { data })
   } catch (error) {
-    console.error("Unable to connect to the database:", error);
+    console.error("Unable to connect to the database:", error)
   }
-};
+}
 
-exports.action = async (req, res, next) => {
-  const id = req.body.id;
+const action = async (req, res, next) => {
+  /*const id = req.body.id;
   const name = req.body.name;
 
   if (req.body.action == "store") {
@@ -46,27 +46,37 @@ exports.action = async (req, res, next) => {
     setTimeout(function () {
       res.redirect("/roles");
     }, 1000);
-  }
-};
-
-exports.show = async (req, res, next) => {
-  const id = req.params.id;
+  }*/
   try {
-    let role = await Role.findAll({
+    const { id, name, action } = req.body
+    action === "store" ? await Role.create({ name }) : await Role.update({ name }, { where: { id }})
+    res.redirect("/roles")
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+const show = async (req, res, next) => {
+  const id = req.params.id
+  try {
+    /*let role = await Role.findAll({
       where: {
         id: parseInt(id),
       },
     });
-    res.json({ data: role[0] });
+    res.json({ data: role[0] });*/
+    const data = await Role.findByPk(id)
+    res.json({ data })
   } catch (error) {
-    console.error("Unable to connect to the database:", error);
+    console.error("Unable to connect to the database:", error)
   }
-};
+}
 
-exports.delete = async (req, res, next) => {
+const Delete = async (req, res, next) => {
   const id = req.body.id;
   try {
-    const upRole = await Role.update(
+    /*const upRole =*/ 
+    await Role.update(
       { state: 0 },
       {
         where: {
@@ -78,4 +88,11 @@ exports.delete = async (req, res, next) => {
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }
-};
+}
+
+module.exports = {
+  index,
+  action,
+  show,
+  Delete
+}

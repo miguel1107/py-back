@@ -7,6 +7,10 @@ var bodyParser = require('body-parser')
 
 const app = express();
 
+app.use(cors({
+    origin: ['http://localhost:3000']
+}))
+
 app.use(cors())
 
 /** motor de plantilla */
@@ -25,6 +29,7 @@ app.use(bodyParser.json())
 
 /** variables de entorno */
 dotenv.config({path: './env/.env'})
+//dotenv.config({path: '.env'})
 
 /** cookies */
 app.use(cookieParser());
@@ -38,6 +43,6 @@ app.use(function(req,res,next){
 /** router */
 app.use('/',require('./routes/router'))
 app.use('/api',require('./routes/api'))
-app.listen(3000, ()=>{
-    console.log('runnig..');
+app.listen(process.env.PORT, ()=>{
+    console.log('runnig....');
 })

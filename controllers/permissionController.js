@@ -1,36 +1,37 @@
-const jwt = require("jsonwebtoken");
+/*const jwt = require("jsonwebtoken");
 const bcryptjs = require("bcryptjs");
 const conexion = require("../database/db");
-const { promisify } = require("util");
+const { promisify } = require("util");*/
 
 const Permision = require("../models/Permission");
 
-exports.index = async (req, res, next) => {
+const index = async (req, res, next) => {
   try {
-    let data = await Permision.findAll({
+    //let data = await Permision.findAll({
+    const data = await Permision.findAll({
       where: {
         state: 1,
       },
-    });
-    res.render("permisos", { data: data });
+    })
+    //res.render("permisos", { data: data });
+    res.render("permisos", { data });
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }
-};
+}
 
-exports.action = async (req, res, next) => {
-  const id = req.body.id;
+const action = async (req, res, next) => {
+  /*const id = req.body.id;
   const name = req.body.name;
   const description = req.body.description;
-
   if (req.body.action == "store") {
     try {
       const permision = Permision.create({
         name: name,
         description: description
-      });
+      })
       setTimeout(function () {
-        res.redirect("/permisos");
+        res.redirect("/permisos")
       }, 1000);
     } catch (error) {
       console.error("Unable to connect to the database:", error);
@@ -48,27 +49,37 @@ exports.action = async (req, res, next) => {
     setTimeout(function () {
       res.redirect("/permisos");
     }, 1000);
+  }*/
+  try {
+    const { id, name, description, action } = req.body
+    action === "store" ? await Permision.create({ name, description }) : await Permision.update({ name, description }, { where: { id: parseInt(id) } })
+    res.redirect("/permisos")
+  } catch (error) {
+    console.error(error)
   }
-};
+}
 
-exports.show = async (req, res, next) => {
+const show = async (req, res, next) => {
   const id = req.params.id;
   try {
-    let permision = await Permision.findAll({
+    /*let permision = await Permision.findAll({
       where: {
         id: parseInt(id),
       },
     });
-    res.json({ data: permision[0] });
+    res.json({ data: permision[0] });*/
+    const data = await Permision.findByPk(id)
+    res.json({ data })
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }
-};
+}
 
-exports.delete = async (req, res, next) => {
+const Delete = async (req, res, next) => {
   const id = req.body.id;
   try {
-    const upPermision = await Permision.update(
+    /*const upPermision =*/ 
+    await Permision.update(
       { state: 0 },
       {
         where: {
@@ -80,4 +91,11 @@ exports.delete = async (req, res, next) => {
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }
-};
+}
+
+module.exports = {
+  index,
+  action,
+  show,
+  Delete
+}
