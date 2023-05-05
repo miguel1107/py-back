@@ -12,7 +12,7 @@ services:
       MYSQL_DATABASE: ${DB_DATABASE}
     container_name: ${DB_HOST}
     volumes:
-      - ./tropical-v0.5-1405.sql:/docker-entrypoint-initdb.d/tropical-v0.5-1405.sql
+      - ./tropical-v06-1804.sql:/docker-entrypoint-initdb.d/tropical-v06-1804.sql
       - ./${DB_HOST}:/var/lib/mysql
   tropicaldapp:
     depends_on:

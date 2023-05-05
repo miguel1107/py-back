@@ -3,15 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
-<<<<<<< HEAD:tropical-v06-1804.sql
--- Tiempo de generación: 18-04-2023 a las 18:05:42
--- Versión del servidor: 5.7.24
--- Versión de PHP: 7.4.10
-=======
 -- Tiempo de generación: 31-03-2023 a las 11:23:01
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
->>>>>>> Dockerizada:tropical-v0.5-1405.sql
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -127,12 +121,8 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`id`, `name`, `image`, `state`, `createdAt`, `updatedAt`) VALUES
 (1, 'test', 'file-bd-mster.PNG', 1, '2023-02-27 23:58:13', '2023-02-27 23:58:13'),
-<<<<<<< HEAD:tropical-v06-1804.sql
-(2, 'gaseosa', 'file-bd-mster.PNG', 1, '2023-04-05 17:25:21', '2023-04-05 17:25:21');
-=======
 (2, 'jugodepera', 'file-android.png', 1, '2023-03-26 15:45:16', '2023-03-26 15:45:16'),
 (3, 'sandwitch', 'file-apple.png', 1, '2023-03-26 15:46:51', '2023-03-26 15:46:51');
->>>>>>> Dockerizada:tropical-v0.5-1405.sql
 
 -- --------------------------------------------------------
 
@@ -155,17 +145,9 @@ CREATE TABLE `product_presentations` (
 --
 
 INSERT INTO `product_presentations` (`id`, `productId`, `presentationId`, `price`, `state`, `createdAt`, `updatedAt`) VALUES
-<<<<<<< HEAD:tropical-v06-1804.sql
-(1, 1, 1, '12.00', 1, '2023-02-27 23:58:43', '2023-02-27 23:58:43'),
-(2, 1, 2, '24.00', 1, '2023-02-27 23:58:50', '2023-02-27 23:58:50'),
-(3, 1, 3, '36.00', 1, '2023-02-27 23:58:57', '2023-04-05 17:43:31'),
-(4, 2, 3, '50.00', 1, '2023-04-05 17:44:11', '2023-04-05 17:44:11'),
-(5, 2, 1, '40.00', 1, '2023-04-05 17:44:22', '2023-04-05 17:44:22');
-=======
 (1, 1, 1, 12.00, 1, '2023-02-27 23:58:43', '2023-02-27 23:58:43'),
 (2, 2, 2, 24.00, 1, '2023-02-27 23:58:50', '2023-02-27 23:58:50'),
 (3, 3, 3, 36.00, 1, '2023-02-27 23:58:57', '2023-02-27 23:58:57');
->>>>>>> Dockerizada:tropical-v0.5-1405.sql
 
 -- --------------------------------------------------------
 
@@ -212,27 +194,16 @@ CREATE TABLE `role_has_permissions` (
 --
 
 CREATE TABLE `sales` (
-<<<<<<< HEAD:tropical-v06-1804.sql
-  `id` int(10) UNSIGNED NOT NULL,
-  `clientId` int(10) UNSIGNED NOT NULL,
-  `date` date NOT NULL,
-=======
   `id` int UNSIGNED NOT NULL,
-  `client_id` int UNSIGNED NOT NULL,
+  `clientId` int UNSIGNED NOT NULL,
   `date` timestamp NOT NULL,
->>>>>>> Dockerizada:tropical-v0.5-1405.sql
   `amount` decimal(10,2) NOT NULL,
   `phone` varchar(10) NOT NULL,
   `latitud` varchar(100) DEFAULT NULL,
   `longitud` varchar(100) DEFAULT NULL,
   `address` text,
-<<<<<<< HEAD:tropical-v06-1804.sql
-  `zoneId` int(10) UNSIGNED DEFAULT NULL,
-  `state` int(1) NOT NULL COMMENT '1:registrado 2:aceptado 3:en proceso 4:entregado 5:cancelado',
-=======
-  `zone_id` int UNSIGNED DEFAULT NULL,
+  `zoneId` int UNSIGNED DEFAULT NULL,
   `state` int NOT NULL COMMENT '1:registrado 2:aceptado 3:en proceso 4:entregado 5:cancelado',
->>>>>>> Dockerizada:tropical-v0.5-1405.sql
   `createdAt` timestamp NULL DEFAULT NULL,
   `updatedAt` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -244,17 +215,10 @@ CREATE TABLE `sales` (
 --
 
 CREATE TABLE `sale_details` (
-<<<<<<< HEAD:tropical-v06-1804.sql
-  `id` int(10) UNSIGNED NOT NULL,
-  `saleId` int(10) UNSIGNED NOT NULL,
-  `productPresentationId` int(10) UNSIGNED NOT NULL,
-  `quantity` int(11) NOT NULL,
-=======
   `id` int UNSIGNED NOT NULL,
   `sale_id` int UNSIGNED NOT NULL,
   `product_presentation_id` int UNSIGNED NOT NULL,
   `quantity` int NOT NULL,
->>>>>>> Dockerizada:tropical-v0.5-1405.sql
   `price` decimal(11,2) NOT NULL,
   `createdAt` timestamp NULL DEFAULT NULL,
   `updatedAt` timestamp NULL DEFAULT NULL
@@ -430,11 +394,7 @@ ALTER TABLE `zones`
 -- AUTO_INCREMENT de la tabla `clients`
 --
 ALTER TABLE `clients`
-<<<<<<< HEAD:tropical-v06-1804.sql
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-=======
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
->>>>>>> Dockerizada:tropical-v0.5-1405.sql
 
 --
 -- AUTO_INCREMENT de la tabla `permissions`
@@ -452,21 +412,13 @@ ALTER TABLE `presentations`
 -- AUTO_INCREMENT de la tabla `products`
 --
 ALTER TABLE `products`
-<<<<<<< HEAD:tropical-v06-1804.sql
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-=======
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
->>>>>>> Dockerizada:tropical-v0.5-1405.sql
 
 --
 -- AUTO_INCREMENT de la tabla `product_presentations`
 --
 ALTER TABLE `product_presentations`
-<<<<<<< HEAD:tropical-v06-1804.sql
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-=======
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
->>>>>>> Dockerizada:tropical-v0.5-1405.sql
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
@@ -496,11 +448,7 @@ ALTER TABLE `sale_details`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-<<<<<<< HEAD:tropical-v06-1804.sql
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-=======
   MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
->>>>>>> Dockerizada:tropical-v0.5-1405.sql
 
 --
 -- AUTO_INCREMENT de la tabla `zones`
