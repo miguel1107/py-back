@@ -1,22 +1,22 @@
 version: '3.8'
 services:
-  # tropical_db:
-  #   image: mysql:latest
-  #   networks:
-  #     - tropical-network
-  #   restart: always
-  #   ports:
-  #     - "${DKDB_PORT}:${DB_PORT}"
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: ${DB_PASS}
-  #     MYSQL_DATABASE: ${DB_DATABASE}
-  #   container_name: ${DKDB_HOST}
-  #   volumes:
-  #     - ./${DKDB_HOST}:/var/lib/mysql
-  #     - ./tropical-v0.5-1405.sql:/docker-entrypoint-initdb.d/tropical-v0.5-1405.sql
+  tropical_db:
+    image: mysql:latest
+    networks:
+      - tropical-network
+    restart: always
+    ports:
+      - "${DKDB_PORT}:${DB_PORT}"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE: ${DB_DATABASE}
+    container_name: ${DB_HOST}
+    volumes:
+      - ./tropical-v0.5-1405.sql:/docker-entrypoint-initdb.d/tropical-v0.5-1405.sql
+      - ./${DB_HOST}:/var/lib/mysql
   tropicaldapp:
-    # depends_on:
-    #   - tropical_db
+    depends_on:
+      - tropical_db
     build:
       context: .
       dockerfile: Dockerfile
@@ -26,19 +26,17 @@ services:
     container_name: TropicalApp
     restart: always
     ports:
-      - "${PORT}:${PORT}"
+      - "${APP_PORT}:${APP_PORT}"
     environment:
-      PORT: ${PORT}
+      PORT: ${APP_PORT}
       JWT_SECRETO: ${JWT_SECRETO}
-      # DB_HOST: ${DB_HOST}
-      # DB_PORT: ${DB_PORT}
-      # DB_USER: ${DB_USER}
-      # DB_PASS: ${DB_PASS}
-      # DB_DATABASE: ${DB_DATABASE}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_DATABASE: ${DB_DATABASE}
       DB_DIAL: ${DB_DIAL}
-      DKDB_HOST: ${DKDB_HOST}
-      DKDB_PORT: ${DKDB_PORT}
-#volumes:
-  # tropical_db:
+volumes:
+  tropical_db:
 networks:
   tropical-network:

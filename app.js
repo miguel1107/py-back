@@ -43,6 +43,6 @@ app.use(function(req,res,next){
 /** router */
 app.use('/',require('./routes/router'))
 app.use('/api',require('./routes/api'))
-app.listen(3000, ()=>{
-    console.log('runnig....');
+app.listen(process.env.APP_PORT, ()=>{
+    console.log(`runnig in port: ${process.env.APP_PORT}`);
 })
