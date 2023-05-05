@@ -11,6 +11,10 @@ const Zone = sequelize.define('zone', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  price:{
+    type: DataTypes.DECIMAL,
+    allowNull: false
+  },
   state: {
     type: DataTypes.INTEGER,
     allowNull: false
