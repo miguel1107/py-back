@@ -375,7 +375,28 @@
                           role="tabpanel"
                           aria-labelledby="pills-profile-tab"
                           tabindex="0"
-                        ></div>
+                        >
+                        <table
+                        class="table table-bordered table-striped table-responsive"
+                      >
+                        <thead>
+                          <tr>
+                            <th>Cliente</th>
+                            <th>Total</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% client.forEach(function(item){ %>
+                          <tr>
+                            <td>
+                              <%= item.client.name%> <%= item.client.last_name%>
+                            </td>
+                            <td><%= item.dataValues.total %></td>
+                          </tr>
+                          <% }) %>
+                        </tbody>
+                      </table>
+                        </div>
                       </div>
                     </div>
                   </div>
