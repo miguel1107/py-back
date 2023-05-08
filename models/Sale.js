@@ -1,7 +1,8 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../conexion/conexion");
 const Client = require("./Client");
-const Zone = require('./Zone')
+const Zone = require('./Zone');
+// const SaleDetail = require("./SaleDetail");
 
 const sale = sequelize.define(
   "sale",
@@ -53,5 +54,6 @@ const sale = sequelize.define(
 );
 
 sale.belongsTo(Client)
+// sale.hasMany(SaleDetail)
 
 module.exports = sale;

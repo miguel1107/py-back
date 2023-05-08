@@ -37,6 +37,9 @@ const SaleDetail = sequelize.define(
   }
 );
 
+SaleDetail.belongsTo(ProductPresentation);
+SaleDetail.belongsTo(Sale)
+
 // `sequelize.define` also returns the model
 // console.log(Client === sequelize.models.Client); // true
 

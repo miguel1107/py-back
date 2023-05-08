@@ -13,6 +13,7 @@ const ProductPresentation = require('../models/ProductPresentation')
 const Presentation = require('../models/Presentation')
 const Sale = require('../models/Sale');
 const SaleDetail = require('../models/SaleDetail');
+const Zone = require('../models/Zone');
 
 exports.index = async (req,res,next)=>{
     try {
@@ -32,7 +33,14 @@ exports.index = async (req,res,next)=>{
                 },
             },
         );
-        res.render('order',{data:data,product:product})
+        let zone = await Zone.findAll(
+            {
+                where: {
+                    state:1 
+                },
+            },
+        );
+        res.render('order',{data:data,product:product,zone:zone})
     } catch (error) {
         console.error('Unable to connect to the database:', error);
     }
@@ -66,7 +74,7 @@ exports.store =  async (req, res, next)=>{
             latitud:req.body.lat,
             longitud:req.body.lon,
             address:req.body.address,
-            zone_id:null,
+            zoneId:req.body.zone[0],
             state:1
         });
         const carrito = (req.body.carrito);
@@ -80,6 +88,7 @@ exports.store =  async (req, res, next)=>{
                 price:carrito[index]['price'],
             });
         }
+        total += parseFloat(req.body.zone[1]);
         const upSale = await Sale.update({amount:total}, {
             where: {
               id: parseInt(order.id)
@@ -101,7 +110,7 @@ exports.list = async (req,res,next)=>{
             where: {
                 date: hoy,
             },
-            include: Client
+            include: Client        
         })
         res.render('list',{data:pedidos,desde:hoy,hasta:hoy,state:""})
     } catch (error) {
@@ -112,7 +121,7 @@ exports.list = async (req,res,next)=>{
 exports.cancel = async (req,res,next)=>{
     try {
         const id = req.params.id;
-        const upSale = await Sale.update({state:5}, {
+        const upSale = await Sale.update({state:6}, {
             where: {
               id: parseInt(id)
             }
@@ -165,6 +174,25 @@ exports.process = async (req,res,next)=>{
             }
           });
           res.json({state:0});
+    } catch (error) {
+        console.error('Unable to connect to the database:', error);
+    }
+};
+
+exports.detail = async(req,res,next)=>{
+    try {
+        let data = [];
+        const id = req.params.id;
+        const lista = await SaleDetail.findAll({
+            where: {
+                saleId: id,
+            },
+            include:[{
+                model: ProductPresentation,
+                include: [{model:Product},{model:Presentation}]
+            }]
+        })
+        res.json({lista:lista});
     } catch (error) {
         console.error('Unable to connect to the database:', error);
     }

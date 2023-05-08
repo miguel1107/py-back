@@ -8,6 +8,7 @@ const zoneController = require('../controllers/zoneController')
 const roleController = require('../controllers/roleController')
 const permissionController = require('../controllers/permissionController')
 const pedidosController = require('./../controllers/pedidosController')
+const reportesController = require('./../controllers/reportesController')
 
 var multer = require('multer');
 const storage = multer.diskStorage({
@@ -84,5 +85,9 @@ router.get('/lista', authController.isAuthenticated,pedidosController.list);
 router.post('/lista', authController.isAuthenticated,pedidosController.lstPost);
 router.get('/lista/cancel/:id',authController.isAuthenticated,pedidosController.cancel);
 router.get('/lista/process/:id/:state',authController.isAuthenticated,pedidosController.process);
+router.get('/lista/detail/:id',authController.isAuthenticated,pedidosController.detail);
+
+router.get('/reportes', authController.isAuthenticated,reportesController.list);
+router.post('/reportes', authController.isAuthenticated,reportesController.lstPost);
 
 module.exports=router;

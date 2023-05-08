@@ -105,7 +105,7 @@
                   <h5 class="card-header">Datos de cliente</h5>
                   <div class="card-body">
                     <div class="row">
-                      <div class="col-md-4">
+                      <div class="col-md-3">
                         <label for="inputPassword5" class="form-label"
                           >Cliente</label
                         >
@@ -122,7 +122,7 @@
                           <% }) %>
                         </select>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-3">
                         <label for="inputPassword5" class="form-label"
                           >Dirección de entrega</label
                         >
@@ -145,6 +145,23 @@
                           name="lon"
                           id="lon"
                         />
+                      </div>
+                      <div class="col-md-3">
+                        <label for="inputPassword5" class="form-label"
+                          >Zona</label
+                        >
+                        <select
+                          class="form-control form-control-sm"
+                          name="zone"
+                          id="zone"
+                        >
+                          <option value="">[Seleccione una zona..]</option>
+                          <% zone.forEach(function(item){ %>
+                          <option value="<%= item.id%>,<%= item.price%>,<%=item.name %>">
+                            <%= item.name%>
+                          </option>
+                          <% }) %>
+                        </select>
                       </div>
                       <div class="col-md-2">
                         <label for="inputPassword5" class="form-label"
@@ -307,7 +324,13 @@
       $(document).ready(function () {
         let carrito = [];
         let globalPresentation = [];
+        let globalZone =[];
         llenaCarrito();
+
+        $('#zone').change(function(){
+          let arr = $("#zone").val().split(',');
+          globalZone=arr;
+        });
 
         $("#product").change(function () {
           $.ajax({
@@ -339,7 +362,7 @@
             },
           });
         });
-      
+        
         $('#presentation').change(function(){
           let pos = $("#presentation").val();
           let element = globalPresentation[pos];
@@ -395,9 +418,14 @@
                 html += "<td align='center'><i style='color:red' class='delete fas fa-trash' data-index='" + index + "'></i></td>";
                 html += "</tr>";
               });
+              total = parseFloat(total) + parseFloat(globalZone[1]);
               html += "<tr>";
-              html += "<td colspan='5' align='right'>TOTAL</td>";
-              html += "<td colspan='2' align='left'>"+parseFloat(total).toFixed(2)+"</td>";
+              html += "<td colspan='5' align='right'>ENVIO A: "+globalZone[2]+"</td>";
+              html += "<td colspan='2' align='left'>"+parseFloat(globalZone[1]).toFixed(2)+"</td>";
+              html += "</tr>";
+              html += "<tr>";
+              html += "<td colspan='5' align='right'><strong>TOTAL</strong></td>";
+              html += "<td colspan='2' align='left'><strong>"+parseFloat(total).toFixed(2)+"<strong></td>";
               html += "</tr>";
             }else{
               html += "<tr>";
@@ -437,6 +465,7 @@
                       lat: $('#lat').val(),
                       lon: $('#lon').val(),
                       address: $('#searchInput').val(),
+                      zone: globalZone,
                       carrito: carrito
                     },
                     success: function (response) {
@@ -452,6 +481,7 @@
                         $('#phone').val('');
                         $('#lat').val('');
                         $('#lon').val('');
+                        $('#zone').val('');
                         $('#searchInput').val('');
                         llenaCarrito();
                       }
