@@ -120,9 +120,9 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `image`, `state`, `createdAt`, `updatedAt`) VALUES
-(1, 'test', 'file-bd-mster.PNG', 1, '2023-02-27 23:58:13', '2023-02-27 23:58:13'),
-(2, 'jugodepera', 'file-android.png', 1, '2023-03-26 15:45:16', '2023-03-26 15:45:16'),
-(3, 'sandwitch', 'file-apple.png', 1, '2023-03-26 15:46:51', '2023-03-26 15:46:51');
+(1, 'jugo de limon', 'limon.jpg', 1, '2023-02-27 23:58:13', '2023-02-27 23:58:13'),
+(2, 'jugo de piña', 'piña.jpg', 1, '2023-03-26 15:45:16', '2023-03-26 15:45:16'),
+(3, 'jugo de maracuya', 'maracuya.jpg', 1, '2023-03-26 15:46:51', '2023-03-26 15:46:51');
 
 -- --------------------------------------------------------
 
@@ -216,8 +216,8 @@ CREATE TABLE `sales` (
 
 CREATE TABLE `sale_details` (
   `id` int UNSIGNED NOT NULL,
-  `sale_id` int UNSIGNED NOT NULL,
-  `product_presentation_id` int UNSIGNED NOT NULL,
+  `saleId` int UNSIGNED NOT NULL,
+  `productPresentationId` int UNSIGNED NOT NULL,
   `quantity` int NOT NULL,
   `price` decimal(11,2) NOT NULL,
   `createdAt` timestamp NULL DEFAULT NULL,
@@ -259,7 +259,7 @@ INSERT INTO `users` (`id`, `name`, `user`, `password`, `roleId`, `state`, `creat
 CREATE TABLE `zones` (
   `id` int UNSIGNED NOT NULL,
   `name` varchar(100) NOT NULL,
-  /*`price` decimal(11,2) NOT NULL,*/
+  `price` decimal(11,2) NOT NULL,
   `state` int NOT NULL,
   `createdAt` timestamp NULL DEFAULT NOW(),
   `updatedAt` timestamp NULL DEFAULT NOW()

@@ -65,7 +65,7 @@ const getAllProducts = async (req, res) => {
         include: [
           {
             model: ProductPresentation,
-            attributes: ['price'],
+            attributes: ['price','presentationId'],
             include: [
               {
                 model: Presentation,
@@ -82,10 +82,10 @@ const getAllProducts = async (req, res) => {
         const {productpresentation, ...rest} = p.toJSON()
         const price = productpresentation ? productpresentation.price : 0
         const presentation = productpresentation.presentation.name
+        const idPret = productpresentation.presentationId
         return {
-          ...rest,
-          price,
-          presentation
+          price, presentation,
+          idPret, ...rest
         }
       }
     )
