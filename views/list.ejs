@@ -193,7 +193,7 @@
                                     <td><%= item.id%></td>
                                     <td><%= item.client.name %> <%= item.client.last_name%></td>
                                     <td><%= item.phone%></td>
-                                    <td><%= item.date.substring(8,10)+'/'+item.date.substring(5,7) +'/'+ item.date.substring(0,4) %></td>
+                                    <td><%= item.date.toString().substring(8,10)+'/'+item.date.toString().substring(4,7) +'/'+ item.date.toString().substring(11,15) %></td>
                                     <td>
                                       <% if(item.state == 1){ %>
                                         <span class="badge text-bg-info">Registrado</span>

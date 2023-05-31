@@ -1,8 +1,8 @@
-const jwt = require('jsonwebtoken')
+/*const jwt = require('jsonwebtoken')
 const bcryptjs = require('bcryptjs')
 const conexion = require('../database/db')
-const {promisify} = require('util')
-const Sequelize = require('sequelize');
+const {promisify} = require('util')*/
+const Sequelize = require('sequelize')
 const Op = Sequelize.Op;
 
 const moment = require('moment');

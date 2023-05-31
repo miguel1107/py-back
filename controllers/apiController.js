@@ -1,11 +1,13 @@
-const bcryptjs = require("bcryptjs");
-const User = require("../models/User");
+const bcryptjs = require("bcryptjs")
+const User = require("../models/User")
 const {generarJWT} = require("../helpers/generar_jwt")
-const Product = require("../models/Product");
+const Product = require("../models/Product")
 const fs = require("fs")
-const path = require("path");
-const ProductPresentation = require("../models/ProductPresentation");
-const Presentation = require("../models/Presentation");
+const path = require("path")
+const ProductPresentation = require("../models/ProductPresentation")
+const Presentation = require("../models/Presentation")
+const Sale = require('../models/Sale')
+const SaleDetail = require('../models/SaleDetail')
 
 /* login */
 const login = async (req, res) => {
@@ -24,6 +26,7 @@ const login = async (req, res) => {
     // Retornamos el token
     res.json({
       token,
+      cod: usuario.id,
       name: usuario.name
     })
   } catch (error) {
@@ -47,6 +50,7 @@ const revalidarToken = async (req, res) => {
   
     res.json({
         token,
+        cod: usuario.id,
         name: usuario.name
     })
   } catch (error) {
@@ -96,4 +100,26 @@ const getAllProducts = async (req, res) => {
   }
 }
 
-module.exports = { login, resetPassword, revalidarToken, getAllProducts }
+const registrarPedido = async (req, res) => {
+  try {
+    const {clientId, counter, amount, state,
+      lat, lng, address, date,
+      phone, zoneId, carrito} = req.body
+    const order = await Sale.create({clientId, amount, date, phone: 69999999, address, zoneId, state, latitud: lat, longitud: lng})
+    console.log(`Order: ${order.id}`)
+    for (let i = counter - 1; i >= 0; i--) {
+      await SaleDetail.create({
+        saleId: order.id,
+        productpresentationId: carrito[i].idprest,
+        quantity: carrito[i].qty,
+        price: carrito[i].price
+      })      
+    }
+    res.status(200).json({codigo: order.id, msg: 'Pedido registrado satisfactoriamente\nGuarde este codigo de pedido'})
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(`Error: ${error}`)
+  }
+}
+
+module.exports = { login, resetPassword, revalidarToken, getAllProducts, registrarPedido }
